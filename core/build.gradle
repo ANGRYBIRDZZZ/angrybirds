@@ -1,0 +1,26 @@
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+eclipse.project.name = appName + '-core'
+
+dependencies {
+  api "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
+  api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
+  api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+  api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion" // Box2D for physics
+  api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion" // Bullet for physics
+  api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion" // LWJGL backend for desktop
+  api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop" // Native libraries for desktop
+  api "com.crashinvaders.lml:gdx-kiwi:$lmlVersion"
+  api "com.github.crykn.guacamole:core:$guacamoleVersion"
+  api "com.github.crykn.guacamole:gdx:$guacamoleVersion"
+  api "com.github.tommyettinger:formic:$formicVersion"
+  api "com.kotcrab.vis:vis-ui:$visUiVersion"
+  api "io.github.libktx:ktx-graphics:$ktxVersion"
+  api project(':shared')
+
+  if(enableGraalNative == 'true') {
+    implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
+  }
+}
