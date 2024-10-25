@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
@@ -24,7 +24,11 @@ public class ChooseLevelScreen implements Screen {
     private Stage stage; // For managing UI elements
     private BitmapFont buttonFont; // Font for buttons
     private Texture background; // Background image
+    private Texture episodeImage; // Texture for episode image
     private ShapeRenderer shapeRenderer; // For drawing shapes
+
+    // Textures for level buttons
+    private Texture level1Texture, level2Texture, level3Texture;
 
     public ChooseLevelScreen(Game game) {
         this.game = game;
@@ -35,7 +39,15 @@ public class ChooseLevelScreen implements Screen {
         shapeRenderer = new ShapeRenderer(); // Initialize ShapeRenderer
 
         // Load assets
-        background = new Texture(Gdx.files.internal("assets/pigface.png")); // Replace with your image path
+        background = new Texture(Gdx.files.internal("assets/pigface.png")); // Background image
+        episodeImage = new Texture(Gdx.files.internal("assets/episode.png")); // Episode image
+        episodeImage.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear); // Set filtering
+        level1Texture = new Texture(Gdx.files.internal("assets/button1.png")); // Level 1 button texture
+        level1Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        level2Texture = new Texture(Gdx.files.internal("assets/button2.png")); // Level 2 button texture
+        level2Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        level3Texture = new Texture(Gdx.files.internal("assets/button3.png")); // Level 3 button texture
+        level3Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         // Create fonts using FreeTypeFontGenerator
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf")); // Replace with your font path
@@ -45,25 +57,10 @@ public class ChooseLevelScreen implements Screen {
         buttonFont = generator.generateFont(parameter); // Generate the font
         generator.dispose(); // Dispose of the generator after use
 
-        // Create buttons for levels
-        for (int i = 1; i <= 5; i++) {
-            final int levelNumber = i; // Capture the level number for the listener
-            TextButton levelButton = createButton("Level " + i, buttonFont);
-            // Center the button horizontally
-            levelButton.setPosition((Gdx.graphics.getWidth() - levelButton.getWidth()) / 2,
-                Gdx.graphics.getHeight() / 2 + (i - 3) * 60); // Adjust position for vertical arrangement
-
-            // Add a listener to navigate to the corresponding GameScreen
-            levelButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    game.setScreen(new GameScreen(game, levelNumber)); // Navigate to GameScreen for this level
-                }
-            });
-
-            // Add the button to the stage
-            stage.addActor(levelButton);
-        }
+        // Create buttons for levels 1, 2, and 3
+        createLevelButton(level1Texture, "Level 1", 1, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2); // Positioned for Level 1
+        createLevelButton(level2Texture, "Level 2", 2, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2); // Positioned for Level 2
+        createLevelButton(level3Texture, "Level 3", 3, (3 * Gdx.graphics.getWidth()) / 4, Gdx.graphics.getHeight() / 2); // Positioned for Level 3
 
         // Create Back button
         TextButton backButton = createButton("Back", buttonFont);
@@ -81,6 +78,31 @@ public class ChooseLevelScreen implements Screen {
 
         // Set input processor
         Gdx.input.setInputProcessor(stage);
+    }
+
+    private void createLevelButton(Texture texture, String levelText, final int levelNumber, float xPosition, float yPosition) {
+        // Create a button that uses the texture
+        TextButton levelButton = createButton("", buttonFont); // Create an empty button
+
+        // Increase button size here
+        levelButton.setSize(texture.getWidth() + 20, texture.getHeight() + 20); // Adjust the size
+
+        levelButton.setPosition(xPosition - levelButton.getWidth() / 2, yPosition - levelButton.getHeight() / 2); // Center the button on the position
+
+        // Add a listener to navigate to the corresponding GameScreen
+        levelButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen(game, levelNumber)); // Navigate to GameScreen for this level
+            }
+        });
+
+        // Add the button to the stage
+        stage.addActor(levelButton);
+
+        // Draw text over the button
+        levelButton.getLabel().setText(levelText); // Set the level text
+        levelButton.getLabel().setColor(Color.WHITE); // Set label color
     }
 
     private TextButton createButton(String text, BitmapFont font) {
@@ -101,48 +123,34 @@ public class ChooseLevelScreen implements Screen {
         // Draw the background texture
         batch.begin();
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        // Define a scaling factor for the episode image
+        float episodeScale = 3.5f; // Adjust this value as needed
+
+        // Draw the episode image at the top center with scaling
+        float episodeX = (Gdx.graphics.getWidth() - episodeImage.getWidth() * episodeScale) / 2; // Center the image horizontally
+        float episodeY = Gdx.graphics.getHeight() - episodeImage.getHeight() * episodeScale - 58; // Move it down by approximately 1 cm (about 38 pixels)
+        batch.draw(episodeImage, episodeX, episodeY, episodeImage.getWidth() * episodeScale, episodeImage.getHeight() * episodeScale); // Draw the scaled image
+
+        // Define scaling factor for button images
+        float scale = 1.8f; // 20% increase
+
+        // Draw the level button textures behind the labels with scaling
+        batch.draw(level1Texture, (Gdx.graphics.getWidth() / 4) - (level1Texture.getWidth() * scale / 2),
+            Gdx.graphics.getHeight() / 2 - (level1Texture.getHeight() * scale / 2),
+            level1Texture.getWidth() * scale, level1Texture.getHeight() * scale); // Scaled dimensions
+
+        batch.draw(level2Texture, (Gdx.graphics.getWidth() / 2) - (level2Texture.getWidth() * scale / 2),
+            Gdx.graphics.getHeight() / 2 - (level2Texture.getHeight() * scale / 2),
+            level2Texture.getWidth() * scale, level2Texture.getHeight() * scale); // Scaled dimensions
+
+        batch.draw(level3Texture, (3 * Gdx.graphics.getWidth() / 4) - (level3Texture.getWidth() * scale / 2),
+            Gdx.graphics.getHeight() / 2 - (level3Texture.getHeight() * scale / 2),
+            level3Texture.getWidth() * scale, level3Texture.getHeight() * scale); // Scaled dimensions
+
         batch.end();
 
-        // Draw rectangles behind each level button
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK); // Set rectangle color to black
-
-        for (int i = 1; i <= 5; i++) {
-            TextButton levelButton = (TextButton) stage.getActors().get(i - 1); // Get the level button
-            float buttonX = levelButton.getX();
-            float buttonY = levelButton.getY();
-            float buttonWidth = levelButton.getWidth();
-            float buttonHeight = levelButton.getHeight();
-
-            // Increase width and height of the rectangles
-            float rectangleWidth = buttonWidth + 27; // Increase to 40 pixels wider
-            float rectangleHeight = buttonHeight + 27; // Increase to 40 pixels taller
-
-            // Center the rectangle behind the button
-            float rectangleX = buttonX - 15; // Shift left by 20 pixels
-            float rectangleY = buttonY - 15; // Shift down by 20 pixels
-
-            // Draw the rectangle behind the button
-            shapeRenderer.rect(rectangleX, rectangleY, rectangleWidth, rectangleHeight);
-        }
-
-        shapeRenderer.end();
-
-        // Draw red rectangle behind the Back button
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED); // Set rectangle color to red
-
-        TextButton backButton = (TextButton) stage.getActors().get(5); // Get the Back button
-        float backButtonX = backButton.getX();
-        float backButtonY = backButton.getY();
-        float backButtonWidth = backButton.getWidth();
-        float backButtonHeight = backButton.getHeight();
-
-        // Draw the red rectangle behind the Back button
-        shapeRenderer.rect(backButtonX, backButtonY, backButtonWidth, backButtonHeight);
-        shapeRenderer.end();
-
-        // Draw the stage (which contains buttons)
+        // Draw the stage (which contains buttons and text)
         stage.act(delta); // Update the stage
         stage.draw(); // Draw the stage
     }
@@ -164,6 +172,10 @@ public class ChooseLevelScreen implements Screen {
         batch.dispose();
         stage.dispose();
         background.dispose();
+        episodeImage.dispose(); // Dispose of episode image
+        level1Texture.dispose(); // Dispose of level 1 texture
+        level2Texture.dispose(); // Dispose of level 2 texture
+        level3Texture.dispose(); // Dispose of level 3 texture
         buttonFont.dispose(); // Dispose of the button font
         shapeRenderer.dispose(); // Dispose of ShapeRenderer
     }
