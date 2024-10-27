@@ -102,7 +102,7 @@ public class ChooseLevelScreen implements Screen {
 
         // Draw text over the button
         levelButton.getLabel().setText(levelText); // Set the level text
-        levelButton.getLabel().setColor(Color.BLACK); // Set label color
+        levelButton.getLabel().setColor(Color.WHITE); // Set label color
     }
 
     private TextButton createButton(String text, BitmapFont font) {
