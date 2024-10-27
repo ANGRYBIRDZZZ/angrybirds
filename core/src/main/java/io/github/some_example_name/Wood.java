@@ -3,7 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Wood extends Block {
+class Wood extends Block {
     private Texture texture;
 
     public Wood(Texture texture, float x, float y) {
