@@ -18,6 +18,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import java.util.*;
+import com.badlogic.gdx.Input; // Add this import
+
 
 public class GameScreen implements Screen {
     private Game game;
@@ -44,6 +46,8 @@ public class GameScreen implements Screen {
     private List<Pig> pigs3;
     private List<Metal> metalBlocks;
     private List<Pig> pigs2;
+    private WinScreen winScreen;
+    private boolean showWinScreen = false;
 
     public GameScreen(Game game, int level) {
         this.game = game;
@@ -206,6 +210,8 @@ public class GameScreen implements Screen {
 
         }
 
+        winScreen = new WinScreen();
+
         // Set the input processor to the stage
         Gdx.input.setInputProcessor(stage);
     }
@@ -268,71 +274,89 @@ public class GameScreen implements Screen {
         batch.begin();
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // Draw red birds for level 1
-        if (level == 1) {
-            if (redBird1 != null) redBird1.draw(batch, 100, 100); // Adjust position and size as needed
-            if (redBird2 != null) redBird2.draw(batch, 100, 100); // Adjust position and size as needed
-            if (redBird3 != null) redBird3.draw(batch, 100, 100); // Adjust position and size as needed
-
-            // Draw slingshots
-            batch.draw(slingshotLeft, 365, 400, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f); // Adjusted position for left slingshot
-            batch.draw(slingshotRight, 400, 290, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f); // Adjusted position and height for right slingshot
-            for (Wood block : woodBlocks) {
-                block.draw(batch);
-            }
-            float pigWidth = 115;  // Set desired width
-            float pigHeight = 100; // Set desired height
-
-            for (Pig pig : pigs1) {
-                pig.draw(batch, pigWidth, pigHeight); // Use the specified width and height
-            }
+        // Check for the win screen trigger
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && !showWinScreen) {
+            showWinScreen = true; // Set the flag to show the win screen
+            winScreen = new WinScreen(); // Create a new WinScreen instance
         }
 
-        // Draw yellow birds for level 2
-        if (level == 2) {
-            if (yellowBird1 != null) yellowBird1.draw(batch, 100, 100); // Adjust position and size as needed
-            if (yellowBird2 != null) yellowBird2.draw(batch, 100, 100); // Adjust position and size as needed
-            if (yellowBird3 != null) yellowBird3.draw(batch, 100, 100); // Adjust position and size as needed
+        // Draw the level content if the win screen is not being shown
+        if (!showWinScreen) {
+            // Draw red birds for level 1
+            if (level == 1) {
+                if (redBird1 != null) redBird1.draw(batch, 100, 100);
+                if (redBird2 != null) redBird2.draw(batch, 100, 100);
+                if (redBird3 != null) redBird3.draw(batch, 100, 100);
 
-            // Draw slingshots
-            batch.draw(slingshotLeft, 365, 380, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f); // Adjusted position for left slingshot
-            batch.draw(slingshotRight, 400, 270, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f); // Adjusted position and height for right slingshot
+                // Draw slingshots
+                batch.draw(slingshotLeft, 365, 400, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f);
+                batch.draw(slingshotRight, 400, 290, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f);
+                for (Wood block : woodBlocks) {
+                    block.draw(batch);
+                }
+                float pigWidth = 115;  // Set desired width
+                float pigHeight = 100; // Set desired height
 
-            for (Metal block : metalBlocks) {
-                block.draw(batch, block.getTexture().getWidth(), block.getTexture().getHeight()); // Pass width and height
+                for (Pig pig : pigs1) {
+                    pig.draw(batch, pigWidth, pigHeight);
+                }
             }
 
-            float pigWidth = 115;  // Set desired width
-            float pigHeight = 100; // Set desired height
+            // Draw yellow birds for level 2
+            if (level == 2) {
+                if (yellowBird1 != null) yellowBird1.draw(batch, 100, 100);
+                if (yellowBird2 != null) yellowBird2.draw(batch, 100, 100);
+                if (yellowBird3 != null) yellowBird3.draw(batch, 100, 100);
 
-            for (Pig pig : pigs2) {
-                pig.draw(batch, pigWidth, pigHeight); // Use the specified width and height
+                // Draw slingshots
+                batch.draw(slingshotLeft, 365, 380, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f);
+                batch.draw(slingshotRight, 400, 270, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f);
+
+                for (Metal block : metalBlocks) {
+                    block.draw(batch, block.getTexture().getWidth(), block.getTexture().getHeight());
+                }
+
+                float pigWidth = 115;  // Set desired width
+                float pigHeight = 100; // Set desired height
+
+                for (Pig pig : pigs2) {
+                    pig.draw(batch, pigWidth, pigHeight);
+                }
             }
 
-        }
+            // Draw blue birds for level 3
+            if (level == 3) {
+                if (blueBird1 != null) blueBird1.draw(batch, 70, 70);
+                if (blueBird2 != null) blueBird2.draw(batch, 70, 70);
+                if (blueBird3 != null) blueBird3.draw(batch, 70, 70);
 
-        // Draw blue birds for level 3
-        if (level == 3) {
-            if (blueBird1 != null) blueBird1.draw(batch, 70, 70); // Adjust position and size as needed
-            if (blueBird2 != null) blueBird2.draw(batch, 70, 70); // Adjust position and size as needed
-            if (blueBird3 != null) blueBird3.draw(batch, 70, 70); // Adjust position and size as needed
+                // Draw slingshots
+                batch.draw(slingshotLeft, 365, 280, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f);
+                batch.draw(slingshotRight, 400, 170, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f);
 
-            // Draw slingshots
-            batch.draw(slingshotLeft, 365, 280, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f); // Adjusted position for left slingshot
-            batch.draw(slingshotRight, 400, 170, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f); // Adjusted position and height for right slingshot
+                float glassWidth = 150;  // Set desired width
+                float glassHeight = 150; // Set desired height
 
-            float glassWidth = 150;  // Set desired width
-            float glassHeight = 150; // Set desired height
+                for (Glass glass : glasses) {
+                    glass.draw(batch, glassWidth, glassHeight);
+                }
 
-            for (Glass glass : glasses) {
-                glass.draw(batch, glassWidth, glassHeight); // Use the specified width and height
+                float pigWidth = 115;  // Set desired width
+                float pigHeight = 100; // Set desired height
+
+                for (Pig pig : pigs3) {
+                    pig.draw(batch, pigWidth, pigHeight);
+                }
             }
+        } else {
+            // Render the win screen if it's active
+            winScreen.render(batch);
 
-            float pigWidth = 115;  // Set desired width
-            float pigHeight = 100; // Set desired height
-
-            for (Pig pig : pigs3) {
-                pig.draw(batch, pigWidth, pigHeight); // Use the specified width and height
+            // Check for the key to go back to the home screen
+            if (Gdx.input.isKeyPressed(Input.Keys.H)) {
+                showWinScreen = false; // Reset the flag
+                winScreen.dispose(); // Dispose of the win screen resources
+                // Logic to go back to the home screen
             }
         }
 
@@ -342,6 +366,7 @@ public class GameScreen implements Screen {
         stage.act(delta);
         stage.draw();
     }
+
 
     @Override
     public void resize(int width, int height) {
