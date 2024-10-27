@@ -52,15 +52,15 @@ public class ChooseLevelScreen implements Screen {
         // Create fonts using FreeTypeFontGenerator
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf")); // Replace with your font path
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 24; // Set font size
+        parameter.size = 40; // Set font size
 
         buttonFont = generator.generateFont(parameter); // Generate the font
         generator.dispose(); // Dispose of the generator after use
 
         // Create buttons for levels 1, 2, and 3
-        createLevelButton(level1Texture, "Level 1", 1, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2); // Positioned for Level 1
-        createLevelButton(level2Texture, "Level 2", 2, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2); // Positioned for Level 2
-        createLevelButton(level3Texture, "Level 3", 3, (3 * Gdx.graphics.getWidth()) / 4, Gdx.graphics.getHeight() / 2); // Positioned for Level 3
+        createLevelButton(level1Texture, "Level 1", 1, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2+50); // Positioned for Level 1
+        createLevelButton(level2Texture, "Level 2", 2, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2+50); // Positioned for Level 2
+        createLevelButton(level3Texture, "Level 3", 3, (3 * Gdx.graphics.getWidth()) / 4, Gdx.graphics.getHeight() / 2+50); // Positioned for Level 3
 
         // Create Back button
         TextButton backButton = createButton("Back", buttonFont);
@@ -102,7 +102,7 @@ public class ChooseLevelScreen implements Screen {
 
         // Draw text over the button
         levelButton.getLabel().setText(levelText); // Set the level text
-        levelButton.getLabel().setColor(Color.WHITE); // Set label color
+        levelButton.getLabel().setColor(Color.BLACK); // Set label color
     }
 
     private TextButton createButton(String text, BitmapFont font) {
@@ -133,19 +133,19 @@ public class ChooseLevelScreen implements Screen {
         batch.draw(episodeImage, episodeX, episodeY, episodeImage.getWidth() * episodeScale, episodeImage.getHeight() * episodeScale); // Draw the scaled image
 
         // Define scaling factor for button images
-        float scale = 1.8f; // 20% increase
+        float scale = 3f; // 20% increase
 
         // Draw the level button textures behind the labels with scaling
         batch.draw(level1Texture, (Gdx.graphics.getWidth() / 4) - (level1Texture.getWidth() * scale / 2),
-            Gdx.graphics.getHeight() / 2 - (level1Texture.getHeight() * scale / 2),
+            Gdx.graphics.getHeight() / 2+50 - (level1Texture.getHeight() * scale / 2),
             level1Texture.getWidth() * scale, level1Texture.getHeight() * scale); // Scaled dimensions
 
         batch.draw(level2Texture, (Gdx.graphics.getWidth() / 2) - (level2Texture.getWidth() * scale / 2),
-            Gdx.graphics.getHeight() / 2 - (level2Texture.getHeight() * scale / 2),
+            Gdx.graphics.getHeight() / 2+50 - (level2Texture.getHeight() * scale / 2),
             level2Texture.getWidth() * scale, level2Texture.getHeight() * scale); // Scaled dimensions
 
         batch.draw(level3Texture, (3 * Gdx.graphics.getWidth() / 4) - (level3Texture.getWidth() * scale / 2),
-            Gdx.graphics.getHeight() / 2 - (level3Texture.getHeight() * scale / 2),
+            Gdx.graphics.getHeight() / 2+50 - (level3Texture.getHeight() * scale / 2),
             level3Texture.getWidth() * scale, level3Texture.getHeight() * scale); // Scaled dimensions
 
         batch.end();
