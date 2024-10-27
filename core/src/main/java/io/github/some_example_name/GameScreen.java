@@ -28,18 +28,18 @@ public class GameScreen implements Screen {
     private Stage stage;
     private Texture background;
     private BitmapFont buttonFont;
-    private ShapeRenderer shapeRenderer; // For drawing rectangles
-    private Bird redBird1; // RedBird instance for level 1
-    private Bird redBird2; // Second RedBird instance for level 1
-    private Bird redBird3; // Third RedBird instance for level 1
-    private Bird yellowBird1; // YellowBird instance for level 2
-    private Bird yellowBird2; // Second YellowBird instance for level 2
-    private Bird yellowBird3; // Third YellowBird instance for level 2
-    private BlueBird blueBird1; // BlueBird instance for level 3
-    private BlueBird blueBird2; // Second BlueBird instance for level 3
-    private BlueBird blueBird3; // Third BlueBird instance for level 3
-    private Texture slingshotLeft; // Slingshot left texture
-    private Texture slingshotRight; // Slingshot right texture
+    private ShapeRenderer shapeRenderer;
+    private Bird redBird1;
+    private Bird redBird2;
+    private Bird redBird3;
+    private Bird yellowBird1;
+    private Bird yellowBird2;
+    private Bird yellowBird3;
+    private BlueBird blueBird1;
+    private BlueBird blueBird2;
+    private BlueBird blueBird3;
+    private Texture slingshotLeft;
+    private Texture slingshotRight;
     List<Wood> woodBlocks = new ArrayList<>();
     private List<Pig> pigs1;
     private List<Glass> glasses;
@@ -53,40 +53,31 @@ public class GameScreen implements Screen {
         this.game = game;
         this.level = level;
 
-        // Initialize SpriteBatch, Stage, and ShapeRenderer
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
         shapeRenderer = new ShapeRenderer();
 
-        // Load the background image for the level
         background = new Texture(Gdx.files.internal("assets/level" + level + ".jpg"));
-
-        // Load slingshot textures
         slingshotLeft = new Texture(Gdx.files.internal("assets/slingshotleft.png"));
         slingshotRight = new Texture(Gdx.files.internal("assets/slingshotright.png"));
 
-        // Create and set up the font using FreeTypeFontGenerator
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 24;
         buttonFont = generator.generateFont(parameter);
         generator.dispose();
 
-        // Create buttons
         createButtons();
 
-        // Initialize red birds only for level 1
         if (level == 1) {
             Texture redBirdTexture1 = new Texture(Gdx.files.internal("assets/redbird1.png"));
             Texture redBirdTexture2 = new Texture(Gdx.files.internal("assets/redbird2.png"));
             Texture redBirdTexture3 = new Texture(Gdx.files.internal("assets/redbird3.png"));
 
-            // Create three red birds with different textures and positions
-            redBird1 = new Bird(redBirdTexture1, 50, 280); // Adjust initial x and y positions as needed
-            redBird2 = new Bird(redBirdTexture2, 150, 280); // Adjust as necessary
-            redBird3 = new Bird(redBirdTexture3, 250, 280); // Adjust as necessary
+            redBird1 = new Bird(redBirdTexture1, 50, 280);
+            redBird2 = new Bird(redBirdTexture2, 150, 280);
+            redBird3 = new Bird(redBirdTexture3, 250, 280);
 
-            // Load textures for the wood blocks
             Texture woodTexture1 = new Texture(Gdx.files.internal("assets/wood1.png"));
             Texture woodTexture2 = new Texture(Gdx.files.internal("assets/wood2.png"));
             Texture woodTexture3 = new Texture(Gdx.files.internal("assets/wood3.png"));
@@ -94,41 +85,36 @@ public class GameScreen implements Screen {
             Texture woodTexture5 = new Texture(Gdx.files.internal("assets/wood5.png"));
             Texture woodTexture6 = new Texture(Gdx.files.internal("assets/wood6.png"));
 
-            // Add Wood blocks with specific positions and heights
-            woodBlocks.add(new Wood(woodTexture1, 1075, 280)); // Adjust x and y as needed
-            woodBlocks.add(new Wood(woodTexture2, 1225, 355)); // Adjust x and y as needed
-            woodBlocks.add(new Wood(woodTexture3, 1375, 425)); // Adjust x and y as needed
-            woodBlocks.add(new Wood(woodTexture4, 1375, 280)); // Adjust x and y as needed
-            woodBlocks.add(new Wood(woodTexture5, 1300, 280)); // Adjust x and y as needed
-            woodBlocks.add(new Wood(woodTexture6, 1600, 280)); // Adjust x and y as needed
+            woodBlocks.add(new Wood(woodTexture1, 1075, 280));
+            woodBlocks.add(new Wood(woodTexture2, 1225, 355));
+            woodBlocks.add(new Wood(woodTexture3, 1375, 425));
+            woodBlocks.add(new Wood(woodTexture4, 1375, 280));
+            woodBlocks.add(new Wood(woodTexture5, 1300, 280));
+            woodBlocks.add(new Wood(woodTexture6, 1600, 280));
 
             pigs1 = new ArrayList<>();
 
-            // Load pig textures
             Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
             Texture pigTexture2 = new Texture(Gdx.files.internal("assets/pig2.png"));
             Texture pigTexture3 = new Texture(Gdx.files.internal("assets/pig3.png"));
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
             Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
 
-            // Add pigs with specific positions
-            pigs1.add(new Pig(pigTexture1, 1080, 350)); // Adjust x and y as needed
-            pigs1.add(new Pig(pigTexture2, 1390, 450)); // Adjust x and y as needed
-            pigs1.add(new Pig(pigTexture3, 1425, 300)); // Adjust x and y as needed
-            pigs1.add(new Pig(pigTexture4, 1225, 500)); // Adjust x and y as needed
-            pigs1.add(new Pig(pigTexture5, 1390, 565)); // Adjust x and y as needed
+            pigs1.add(new Pig(pigTexture1, 1080, 350));
+            pigs1.add(new Pig(pigTexture2, 1390, 450));
+            pigs1.add(new Pig(pigTexture3, 1425, 300));
+            pigs1.add(new Pig(pigTexture4, 1225, 500));
+            pigs1.add(new Pig(pigTexture5, 1390, 565));
         }
 
-        // Initialize yellow birds only for level 2
         if (level == 2) {
             Texture yellowBirdTexture1 = new Texture(Gdx.files.internal("assets/yellowbird1.png"));
             Texture yellowBirdTexture2 = new Texture(Gdx.files.internal("assets/yellowbird2.png"));
             Texture yellowBirdTexture3 = new Texture(Gdx.files.internal("assets/yellowbird3.png"));
 
-            // Create three yellow birds with different textures and positions
-            yellowBird1 = new Bird(yellowBirdTexture1, 50, 260); // Adjust initial x and y positions as needed
-            yellowBird2 = new Bird(yellowBirdTexture2, 150, 260); // Adjust as necessary
-            yellowBird3 = new Bird(yellowBirdTexture3, 250, 260); // Adjust as necessary
+            yellowBird1 = new Bird(yellowBirdTexture1, 50, 260);
+            yellowBird2 = new Bird(yellowBirdTexture2, 150, 260);
+            yellowBird3 = new Bird(yellowBirdTexture3, 250, 260);
 
             Texture metalTexture1 = new Texture(Gdx.files.internal("assets/metal1.png"));
             Texture metalTexture2 = new Texture(Gdx.files.internal("assets/metal2.png"));
@@ -136,26 +122,22 @@ public class GameScreen implements Screen {
             Texture metalTexture4 = new Texture(Gdx.files.internal("assets/metal4.png"));
             Texture metalTexture5 = new Texture(Gdx.files.internal("assets/metal5.png"));
 
-            // Initialize the metal blocks list
             metalBlocks = new ArrayList<>();
 
-            // Add metal blocks with specific positions
             metalBlocks.add(new Metal(metalTexture1, 1125, 260)); // Adjust x and y as needed
             metalBlocks.add(new Metal(metalTexture2, 1200, 260)); // Adjust x and y as needed
             metalBlocks.add(new Metal(metalTexture3, 1250, 400)); // Adjust x and y as needed
             metalBlocks.add(new Metal(metalTexture4, 1425, 260)); // Adjust x and y as needed
             metalBlocks.add(new Metal(metalTexture5, 1100, 475)); // Adjust x and y as needed
 
-            pigs2 = new ArrayList<>(); // Initialize the pigs list for level 3
+            pigs2 = new ArrayList<>();
 
-            // Load pig textures
             Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
             Texture pigTexture2 = new Texture(Gdx.files.internal("assets/pig2.png"));
             Texture pigTexture3 = new Texture(Gdx.files.internal("assets/pig3.png"));
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
             Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
 
-            // Add pigs with specific positions
             pigs2.add(new Pig(pigTexture1, 1260, 425)); // Adjust x and y as needed
             pigs2.add(new Pig(pigTexture2, 1500, 260)); // Adjust x and y as needed
             pigs2.add(new Pig(pigTexture3, 1405, 480)); // Adjust x and y as needed
@@ -165,43 +147,37 @@ public class GameScreen implements Screen {
 
         }
 
-        // Initialize blue birds only for level 3
         if (level == 3) {
             Texture blueBirdTexture1 = new Texture(Gdx.files.internal("assets/bluebird1.png"));
             Texture blueBirdTexture2 = new Texture(Gdx.files.internal("assets/bluebird2.png"));
             Texture blueBirdTexture3 = new Texture(Gdx.files.internal("assets/bluebird3.png"));
 
-            // Create three blue birds with different textures and positions
-            blueBird1 = new BlueBird(blueBirdTexture1, 135, 165); // Adjust initial x and y positions as needed
-            blueBird2 = new BlueBird(blueBirdTexture2, 205, 165); // Adjust as necessary
-            blueBird3 = new BlueBird(blueBirdTexture3, 275, 165); // Adjust as necessary
+            blueBird1 = new BlueBird(blueBirdTexture1, 135, 165);
+            blueBird2 = new BlueBird(blueBirdTexture2, 205, 165);
+            blueBird3 = new BlueBird(blueBirdTexture3, 275, 165);
 
             glasses = new ArrayList<>();
 
-            // Load glass textures
             Texture glassTexture1 = new Texture(Gdx.files.internal("assets/glass1.png"));
             Texture glassTexture2 = new Texture(Gdx.files.internal("assets/glass2.png"));
             Texture glassTexture3 = new Texture(Gdx.files.internal("assets/glass3.png"));
             Texture glassTexture4 = new Texture(Gdx.files.internal("assets/glass4.png"));
             Texture glassTexture5 = new Texture(Gdx.files.internal("assets/glass5.png"));
 
-            // Add glasses with specific positions
-            glasses.add(new Glass(glassTexture1, 1400, 175)); // Adjust x and y as needed
-            glasses.add(new Glass(glassTexture2, 1250, 175)); // Adjust x and y as needed
-            glasses.add(new Glass(glassTexture3, 1100, 175)); // Adjust x and y as needed
-            glasses.add(new Glass(glassTexture4, 1250, 475)); // Adjust x and y as needed
-            glasses.add(new Glass(glassTexture5, 1250, 325)); // Adjust x and y as needed
+            glasses.add(new Glass(glassTexture1, 1400, 175));
+            glasses.add(new Glass(glassTexture2, 1250, 175));
+            glasses.add(new Glass(glassTexture3, 1100, 175));
+            glasses.add(new Glass(glassTexture4, 1250, 475));
+            glasses.add(new Glass(glassTexture5, 1250, 325));
 
-            pigs3 = new ArrayList<>(); // Initialize the pigs list for level 3
+            pigs3 = new ArrayList<>();
 
-            // Load pig textures
             Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
             Texture pigTexture2 = new Texture(Gdx.files.internal("assets/pig2.png"));
             Texture pigTexture3 = new Texture(Gdx.files.internal("assets/pig3.png"));
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
             Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
 
-            // Add pigs with specific positions
             pigs3.add(new Pig(pigTexture1, 1115, 190)); // Adjust x and y as needed
             pigs3.add(new Pig(pigTexture2, 1400, 325)); // Adjust x and y as needed
             pigs3.add(new Pig(pigTexture3, 1410, 205)); // Adjust x and y as needed
@@ -212,7 +188,6 @@ public class GameScreen implements Screen {
 
         winScreen = new WinScreen();
 
-        // Set the input processor to the stage
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -220,10 +195,8 @@ public class GameScreen implements Screen {
         TextButtonStyle buttonStyle = new TextButtonStyle();
         buttonStyle.font = buttonFont;
 
-        // Set font color based on the level (Black for level 4, White for others)
         buttonStyle.fontColor = level == 4 ? Color.BLACK : Color.WHITE;
 
-        // Create the Back button
         createButton("Back", 20, Gdx.graphics.getHeight() - 50, buttonStyle, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -231,7 +204,6 @@ public class GameScreen implements Screen {
             }
         });
 
-        // Create other buttons with the same style
         createButton("Pause", Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 50, buttonStyle);
         createButton("Save", Gdx.graphics.getWidth() - 120, 20, buttonStyle, new ClickListener() {
             @Override
@@ -266,29 +238,23 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        // Clear the screen
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Draw the background image
         batch.begin();
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // Check for the win screen trigger
         if (Gdx.input.isKeyPressed(Input.Keys.W) && !showWinScreen) {
-            showWinScreen = true; // Set the flag to show the win screen
-            winScreen = new WinScreen(); // Create a new WinScreen instance
+            showWinScreen = true;
+            winScreen = new WinScreen();
         }
 
-        // Draw the level content if the win screen is not being shown
         if (!showWinScreen) {
-            // Draw red birds for level 1
             if (level == 1) {
                 if (redBird1 != null) redBird1.draw(batch, 100, 100);
                 if (redBird2 != null) redBird2.draw(batch, 100, 100);
                 if (redBird3 != null) redBird3.draw(batch, 100, 100);
 
-                // Draw slingshots
                 batch.draw(slingshotLeft, 365, 400, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f);
                 batch.draw(slingshotRight, 400, 290, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f);
                 for (Wood block : woodBlocks) {
@@ -302,13 +268,11 @@ public class GameScreen implements Screen {
                 }
             }
 
-            // Draw yellow birds for level 2
             if (level == 2) {
                 if (yellowBird1 != null) yellowBird1.draw(batch, 100, 100);
                 if (yellowBird2 != null) yellowBird2.draw(batch, 100, 100);
                 if (yellowBird3 != null) yellowBird3.draw(batch, 100, 100);
 
-                // Draw slingshots
                 batch.draw(slingshotLeft, 365, 380, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f);
                 batch.draw(slingshotRight, 400, 270, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f);
 
@@ -316,53 +280,47 @@ public class GameScreen implements Screen {
                     block.draw(batch, block.getTexture().getWidth(), block.getTexture().getHeight());
                 }
 
-                float pigWidth = 115;  // Set desired width
-                float pigHeight = 100; // Set desired height
+                float pigWidth = 115;
+                float pigHeight = 100;
 
                 for (Pig pig : pigs2) {
                     pig.draw(batch, pigWidth, pigHeight);
                 }
             }
 
-            // Draw blue birds for level 3
             if (level == 3) {
                 if (blueBird1 != null) blueBird1.draw(batch, 70, 70);
                 if (blueBird2 != null) blueBird2.draw(batch, 70, 70);
                 if (blueBird3 != null) blueBird3.draw(batch, 70, 70);
 
-                // Draw slingshots
                 batch.draw(slingshotLeft, 365, 280, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f);
                 batch.draw(slingshotRight, 400, 170, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f);
 
-                float glassWidth = 150;  // Set desired width
-                float glassHeight = 150; // Set desired height
+                float glassWidth = 150;
+                float glassHeight = 150;
 
                 for (Glass glass : glasses) {
                     glass.draw(batch, glassWidth, glassHeight);
                 }
 
-                float pigWidth = 115;  // Set desired width
-                float pigHeight = 100; // Set desired height
+                float pigWidth = 115;
+                float pigHeight = 100;
 
                 for (Pig pig : pigs3) {
                     pig.draw(batch, pigWidth, pigHeight);
                 }
             }
         } else {
-            // Render the win screen if it's active
             winScreen.render(batch);
 
-            // Check for the key to go back to the home screen
             if (Gdx.input.isKeyPressed(Input.Keys.H)) {
-                showWinScreen = false; // Reset the flag
-                winScreen.dispose(); // Dispose of the win screen resources
-                // Logic to go back to the home screen
+                showWinScreen = false;
+                winScreen.dispose();
             }
         }
 
         batch.end();
 
-        // Draw the stage
         stage.act(delta);
         stage.draw();
     }
@@ -375,27 +333,22 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        // Called when this screen is set as the current screen for a Game
     }
 
     @Override
     public void hide() {
-        // Called when this screen is no longer the current screen for a Game
     }
 
     @Override
     public void pause() {
-        // Called when the game is paused
     }
 
     @Override
     public void resume() {
-        // Called when the game is resumed after being paused
     }
 
     @Override
     public void dispose() {
-        // Dispose of all resources to avoid memory leaks
         batch.dispose();
         stage.dispose();
         shapeRenderer.dispose();
@@ -404,7 +357,6 @@ public class GameScreen implements Screen {
         slingshotLeft.dispose();
         slingshotRight.dispose();
 
-        // Dispose birds based on their level
         if (level == 1) {
             if (redBird1 != null) redBird1.getTexture().dispose();
             if (redBird2 != null) redBird2.getTexture().dispose();

@@ -7,7 +7,7 @@ public class Wood extends Block {
     private Texture texture;
 
     public Wood(Texture texture, float x, float y) {
-        super(x, y); // Call Block's constructor with x, y
+        super(x, y);
         this.texture = texture;
     }
 

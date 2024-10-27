@@ -19,6 +19,6 @@ public class Glass {
     }
 
     public Texture getTexture() {
-        return texture; // Getter for the texture
+        return texture;
     }
 }

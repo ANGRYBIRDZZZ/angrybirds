@@ -20,6 +20,6 @@ public class Metal {
     }
 
     public Texture getTexture() {
-        return texture; // Getter for the texture
+        return texture;
     }
 }

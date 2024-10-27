@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Bird {
-    protected Texture texture; // Texture for the bird
-    protected float x; // X position
-    protected float y; // Y position
+    protected Texture texture;
+    protected float x;
+    protected float y;
 
     public Bird(Texture texture, float x, float y) {
         this.texture = texture;
@@ -14,9 +14,8 @@ public class Bird {
         this.y = y;
     }
 
-    // Updated draw method to accept width and height for scaling
     public void draw(SpriteBatch batch, float width, float height) {
-        batch.draw(texture, x, y, width, height); // Use width and height for drawing
+        batch.draw(texture, x, y, width, height);
     }
 
     public void setPosition(float x, float y) {
@@ -25,10 +24,10 @@ public class Bird {
     }
 
     public Texture getTexture() {
-        return texture; // Access the texture
+        return texture;
     }
 
     public void dispose() {
-        texture.dispose(); // Dispose texture in the base class
+        texture.dispose();
     }
 }

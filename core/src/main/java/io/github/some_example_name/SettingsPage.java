@@ -107,7 +107,7 @@ public class SettingsPage implements Screen {
         batch.dispose();
         stage.dispose();
         background.dispose();
-        buttonFont.dispose(); // Dispose of the button font if created here
+        buttonFont.dispose();
     }
 
 }
