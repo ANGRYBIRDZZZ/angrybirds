@@ -2,19 +2,16 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 
-class Wood extends Block {
-    private Texture texture;
+public class Wood extends Block {
 
-    public Wood(Texture texture, float x, float y) {
-        super(x, y);
+    public Wood(World world, Texture texture, float x, float y) {
+        super(world, x, y, texture.getWidth(), texture.getHeight()); // Static for immovable blocks
         this.texture = texture;
     }
 
-    @Override
-    public void draw(SpriteBatch batch) {
-        batch.draw(texture, getX(), getY(), texture.getWidth(), texture.getHeight());
-    }
 
     @Override
     public void dispose() {

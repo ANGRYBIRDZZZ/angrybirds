@@ -2,12 +2,13 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class MediumPig extends Pig {
     private int health;
 
-    public MediumPig(Texture texture, float x, float y) {
-        super(texture, x, y);
+    public MediumPig(World world, Texture texture, float x, float y) {
+        super(world, texture, x, y);
         this.health = 20; // Default health for medium pig
     }
 

@@ -1,25 +1,20 @@
 package io.github.some_example_name;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 
-public class Metal {
-    private Texture texture;
-    private float x;
-    private float y;
+public class Metal extends Block {
 
-    public Metal(Texture texture, float x, float y) {
+    public Metal(World world, Texture texture, float x, float y) {
+        super(world, x, y, texture.getWidth(), texture.getHeight());
         this.texture = texture;
-        this.x = x;
-        this.y = y;
+
     }
 
-    public void draw(SpriteBatch batch, float width, float height) {
-        batch.draw(texture, x, y, width, height);
-    }
-
-    public Texture getTexture() {
-        return texture;
+    @Override
+    public void dispose() {
+        if (texture != null) texture.dispose();
     }
 }
