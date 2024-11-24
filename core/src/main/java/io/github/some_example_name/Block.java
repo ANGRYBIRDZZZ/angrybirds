@@ -20,13 +20,13 @@ public abstract class Block {
         this.height=height;
         // Create the rectangular shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width /4f, height /4f);
+        shape.setAsBox(width /4.5f, height /4f);
 
         // Define fixture properties
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.5f;
-        fixtureDef.friction = 0.1f;
+        fixtureDef.density = 0.05f;
+        fixtureDef.friction = 0.005f;
         fixtureDef.restitution = 0.2f; // Adjust for bounciness if needed
 
         body.setFixedRotation(true);

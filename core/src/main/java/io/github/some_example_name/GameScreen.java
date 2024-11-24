@@ -112,7 +112,7 @@ public class GameScreen implements Screen {
 
             //woodBlocks.add(new Wood(world,woodTexture1, 1075, 280));
             woodBlocks.add(new Wood(world,woodTexture2, 1225, 355));
-            woodBlocks.add(new Wood(world,woodTexture3, 1375, 425));
+            woodBlocks.add(new Wood(world,woodTexture3, 1400, 425));
             woodBlocks.add(new Wood(world,woodTexture4, 1375, 280));
             //woodBlocks.add(new Wood(world,woodTexture5, 1300, 280));
             woodBlocks.add(new Wood(world,woodTexture6, 1450, 280));
@@ -128,13 +128,13 @@ public class GameScreen implements Screen {
             //pigs1.add(new Pig(world,pigTexture1, 1100, 350));
             pigs1.add(new Pig(world,pigTexture2, 1350, 450));
             pigs1.add(new Pig(world,pigTexture3, 1475, 300));
-            pigs1.add(new Pig(world,pigTexture4, 1225, 500));
+            pigs1.add(new Pig(world,pigTexture4, 1250, 500));
             //pigs1.add(new Pig(world,pigTexture5, 1390, 565));
         }
 
         if (level == 2) {
             slingPosition=new Vector2(370,450);
-            world=new World(new Vector2(0,-30),true);
+            world=new World(new Vector2(0,-10),true);
             Texture yellowBirdTexture1 = new Texture(Gdx.files.internal("assets/yellowbird1.png"));
             Texture yellowBirdTexture2 = new Texture(Gdx.files.internal("assets/yellowbird2.png"));
             Texture yellowBirdTexture3 = new Texture(Gdx.files.internal("assets/yellowbird3.png"));
@@ -143,10 +143,10 @@ public class GameScreen implements Screen {
             yellowBird2 = new YellowBird(world,yellowBirdTexture2, 100, 260);
             yellowBird3 = new YellowBird(world,yellowBirdTexture3, 150, 260);
 
-            Texture metalTexture1 = new Texture(Gdx.files.internal("assets/metal1.png"));
+            Texture metalTexture1 = new Texture(Gdx.files.internal("assets/metal5.png"));
             Texture metalTexture2 = new Texture(Gdx.files.internal("assets/metal2.png"));
             Texture metalTexture3 = new Texture(Gdx.files.internal("assets/metal3.png"));
-            Texture metalTexture4 = new Texture(Gdx.files.internal("assets/metal4.png"));
+            Texture metalTexture4 = new Texture(Gdx.files.internal("assets/metal5.png"));
             Texture metalTexture5 = new Texture(Gdx.files.internal("assets/metal5.png"));
 
             birds.add(yellowBird1);
@@ -155,11 +155,11 @@ public class GameScreen implements Screen {
 
             metalBlocks = new ArrayList<>();
 
-            //metalBlocks.add(new Metal(world,metalTexture1, 1125, 260)); // Adjust x and y as needed
-            //metalBlocks.add(new Metal(world,metalTexture2, 1200, 260)); // Adjust x and y as needed
-            metalBlocks.add(new Metal(world,metalTexture3, 1250, 400)); // Adjust x and y as needed
+            metalBlocks.add(new Metal(world,metalTexture1, 1125, 260)); // Adjust x and y as needed
+            metalBlocks.add(new Metal(world,metalTexture2, 1250, 260)); // Adjust x and y as needed
+            metalBlocks.add(new Metal(world,metalTexture3, 1300, 600)); // Adjust x and y as needed
             metalBlocks.add(new Metal(world,metalTexture4, 1425, 260)); // Adjust x and y as needed
-            //metalBlocks.add(new Metal(world,metalTexture5, 1100, 475)); // Adjust x and y as needed
+            metalBlocks.add(new Metal(world,metalTexture5, 1425, 475)); // Adjust x and y as needed
 
             pigs2 = new ArrayList<>();
 
@@ -169,18 +169,18 @@ public class GameScreen implements Screen {
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
             Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
 
-            //pigs2.add(new Pig(world,pigTexture1, 1260, 425)); // Adjust x and y as needed
+            pigs2.add(new Pig(world,pigTexture1, 1260, 425)); // Adjust x and y as needed
             //pigs2.add(new Pig(world,pigTexture2, 1500, 260)); // Adjust x and y as needed
-            //pigs2.add(new Pig(world,pigTexture3, 1405, 480)); // Adjust x and y as needed
+            pigs2.add(new Pig(world,pigTexture3, 1405, 480)); // Adjust x and y as needed
             pigs2.add(new Pig(world,pigTexture4, 1110, 610)); // Adjust x and y as needed
-            //pigs2.add(new Pig(world,pigTexture5, 1260, 275)); // Adjust x and y as needed
+            pigs2.add(new Pig(world,pigTexture5, 1260, 275)); // Adjust x and y as needed
 
 
         }
 
         if (level == 3) {
             slingPosition=new Vector2(375,350);
-            world=new World(new Vector2(0,-30),true);
+            world=new World(new Vector2(0,-20),true);
             Texture blueBirdTexture1 = new Texture(Gdx.files.internal("assets/bluebird1.png"));
             Texture blueBirdTexture2 = new Texture(Gdx.files.internal("assets/bluebird2.png"));
             Texture blueBirdTexture3 = new Texture(Gdx.files.internal("assets/bluebird3.png"));
@@ -193,15 +193,15 @@ public class GameScreen implements Screen {
 
             Texture glassTexture1 = new Texture(Gdx.files.internal("assets/glass1.png"));
             Texture glassTexture2 = new Texture(Gdx.files.internal("assets/glass2.png"));
-            Texture glassTexture3 = new Texture(Gdx.files.internal("assets/glass3.png"));
-            Texture glassTexture4 = new Texture(Gdx.files.internal("assets/glass4.png"));
+            Texture glassTexture3 = new Texture(Gdx.files.internal("assets/glass5.png"));
+            Texture glassTexture4 = new Texture(Gdx.files.internal("assets/glass2.png"));
             Texture glassTexture5 = new Texture(Gdx.files.internal("assets/glass5.png"));
 
-            glasses.add(new Glass(world,glassTexture1, 1400, 175));
-            glasses.add(new Glass(world,glassTexture2, 1250, 175));
-            glasses.add(new Glass(world,glassTexture3, 1100, 175));
-            glasses.add(new Glass(world,glassTexture4, 1250, 475));
-            glasses.add(new Glass(world,glassTexture5, 1250, 325));
+            //glasses.add(new Glass(world,glassTexture1, 1400, 175));
+            glasses.add(new Glass(world,glassTexture2, 1150, 175));
+            glasses.add(new Glass(world,glassTexture3, 1520, 500));
+            glasses.add(new Glass(world,glassTexture4, 1520, 475));
+            glasses.add(new Glass(world,glassTexture5, 1300, 325));
 
             birds.add(blueBird1);
             birds.add(blueBird2);
@@ -215,11 +215,11 @@ public class GameScreen implements Screen {
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
             Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
 
-            pigs3.add(new Pig(world,pigTexture1, 1115, 190)); // Adjust x and y as needed
-            pigs3.add(new Pig(world,pigTexture2, 1400, 325)); // Adjust x and y as needed
-            pigs3.add(new Pig(world,pigTexture3, 1410, 205)); // Adjust x and y as needed
-            pigs3.add(new Pig(world,pigTexture4, 1125, 325)); // Adjust x and y as needed
-            pigs3.add(new Pig(world,pigTexture5, 1260, 625)); // Adjust x and y as needed
+            pigs3.add(new Pig(world,pigTexture1, 1300, 325)); // Adjust x and y as needed
+            //pigs3.add(new Pig(world,pigTexture2, 1400, 325)); // Adjust x and y as needed
+            //pigs3.add(new Pig(world,pigTexture3, 1410, 205)); // Adjust x and y as needed
+            pigs3.add(new Pig(world,pigTexture4, 1100, 325)); // Adjust x and y as needed
+            pigs3.add(new Pig(world,pigTexture5, 1500, 400)); // Adjust x and y as needed
 
         }
 
@@ -428,7 +428,7 @@ public class GameScreen implements Screen {
         } else if (level ==2) {
             groundBodyDef.position.set(50, 60);
         } else {
-            groundBodyDef.position.set(50, 20);
+            groundBodyDef.position.set(35, 20);
         }
 
          // Set the ground's position (centered)
@@ -457,9 +457,9 @@ public class GameScreen implements Screen {
         if (level == 1) {
             bodyDef.position.set(195,150); // Set the ground's position (centered)
         } else if (level == 2) {
-            bodyDef.position.set(195,140); // Set the ground's position (centered)
+            bodyDef.position.set(195,130); // Set the ground's position (centered)
         } else {
-            bodyDef.position.set(195,90); // Set the ground's position (centered)
+            bodyDef.position.set(195,80); // Set the ground's position (centered)
         }
         bodyDef.type = BodyDef.BodyType.StaticBody;
         // Create the ground body in the world

@@ -32,7 +32,7 @@ public abstract class Bird {
         // Create Box2D fixture and attach it to the body
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 10f;
+        fixtureDef.density = 0.5f;
         fixtureDef.friction = 0.5f;
         fixtureDef.restitution = 0.5f; // Bounciness
 

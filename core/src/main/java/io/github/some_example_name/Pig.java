@@ -27,9 +27,9 @@ public class Pig {
         // Define the fixture for the pig
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.5f; // Adjust density for desired physics behavior
-        fixtureDef.friction = 0.5f; // Friction for realistic movement
-        fixtureDef.restitution = 0.25f; // Bounciness for some impact response
+        fixtureDef.density = 0.05f; // Adjust density for desired physics behavior
+        fixtureDef.friction = 0.25f; // Friction for realistic movement
+        fixtureDef.restitution = 0.1f; // Bounciness for some impact response
 
         body.setFixedRotation(true);
         // Attach the fixture to the body
