@@ -3,6 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -79,7 +80,6 @@ public class GameScreen implements Screen {
         slingshotLeft = new Texture(Gdx.files.internal("assets/slingshotleft.png"));
         slingshotRight = new Texture(Gdx.files.internal("assets/slingshotright.png"));
         birds = new ArrayList<>();
-
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 24;

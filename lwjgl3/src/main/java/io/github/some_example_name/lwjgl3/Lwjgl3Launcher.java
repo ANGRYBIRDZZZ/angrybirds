@@ -20,10 +20,10 @@ public class Lwjgl3Launcher {
         configuration.setTitle("AngryBirds_AP");
 
         // Start in full-screen mode
-        configuration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+        configuration.setWindowedMode(1920, 1200);
 
         // Allow the user to resize the window
-        configuration.setResizable(true);
+        configuration.setResizable(false);
 
         // Enable vsync
         configuration.useVsync(true);
