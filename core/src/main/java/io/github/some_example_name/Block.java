@@ -14,7 +14,7 @@ public abstract class Block {
         // Create the body definition
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x/2.1f,y);
+        bodyDef.position.set(x/2f,y/2f);
         this.body = world.createBody(bodyDef);
         this.width=width;
         this.height=height;
@@ -25,8 +25,8 @@ public abstract class Block {
         // Define fixture properties
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1.0f;
-        fixtureDef.friction = 0.5f;
+        fixtureDef.density = 0.5f;
+        fixtureDef.friction = 0.1f;
         fixtureDef.restitution = 0.2f; // Adjust for bounciness if needed
 
         body.setFixedRotation(true);

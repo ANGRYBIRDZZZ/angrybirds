@@ -17,19 +17,19 @@ public class Pig {
         // Define the body for the pig
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody; // Pigs should move when hit
-        bodyDef.position.set(x/1.85f-60,y/1.2f); // Initial position
+        bodyDef.position.set(x/1.8f-60,y/1f); // Initial position
         this.body = world.createBody(bodyDef);
 
         // Define the shape for the pig (circle or rectangle)
         CircleShape shape = new CircleShape();
-        shape.setRadius(27); // Adjust the radius based on your texture size
+        shape.setRadius(25); // Adjust the radius based on your texture size
 
         // Define the fixture for the pig
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 100f; // Adjust density for desired physics behavior
-        fixtureDef.friction = 0.3f; // Friction for realistic movement
-        fixtureDef.restitution = 0.5f; // Bounciness for some impact response
+        fixtureDef.density = 0.5f; // Adjust density for desired physics behavior
+        fixtureDef.friction = 0.5f; // Friction for realistic movement
+        fixtureDef.restitution = 0.25f; // Bounciness for some impact response
 
         body.setFixedRotation(true);
         // Attach the fixture to the body

@@ -90,7 +90,7 @@ public class GameScreen implements Screen {
 
         if (level == 1) {
             slingPosition=new Vector2(370,490);
-            world=new World(new Vector2(0,-30),true);
+            world=new World(new Vector2(0,-15),true);
             Texture redBirdTexture1 = new Texture(Gdx.files.internal("assets/redbird1.png"));
             Texture redBirdTexture2 = new Texture(Gdx.files.internal("assets/redbird2.png"));
             Texture redBirdTexture3 = new Texture(Gdx.files.internal("assets/redbird3.png"));
@@ -103,33 +103,33 @@ public class GameScreen implements Screen {
             birds.add(redBird2);
             birds.add(redBird3);
 
-            Texture woodTexture1 = new Texture(Gdx.files.internal("assets/wood1.png"));
+            //Texture woodTexture1 = new Texture(Gdx.files.internal("assets/wood1.png"));
             Texture woodTexture2 = new Texture(Gdx.files.internal("assets/wood2.png"));
             Texture woodTexture3 = new Texture(Gdx.files.internal("assets/wood3.png"));
             Texture woodTexture4 = new Texture(Gdx.files.internal("assets/wood4.png"));
-            Texture woodTexture5 = new Texture(Gdx.files.internal("assets/wood5.png"));
+            //Texture woodTexture5 = new Texture(Gdx.files.internal("assets/wood5.png"));
             Texture woodTexture6 = new Texture(Gdx.files.internal("assets/wood6.png"));
 
-            woodBlocks.add(new Wood(world,woodTexture1, 1075, 280));
+            //woodBlocks.add(new Wood(world,woodTexture1, 1075, 280));
             woodBlocks.add(new Wood(world,woodTexture2, 1225, 355));
             woodBlocks.add(new Wood(world,woodTexture3, 1375, 425));
             woodBlocks.add(new Wood(world,woodTexture4, 1375, 280));
-            woodBlocks.add(new Wood(world,woodTexture5, 1300, 280));
-            woodBlocks.add(new Wood(world,woodTexture6, 1600, 280));
+            //woodBlocks.add(new Wood(world,woodTexture5, 1300, 280));
+            woodBlocks.add(new Wood(world,woodTexture6, 1450, 280));
 
             pigs1 = new ArrayList<>();
 
-            Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
+            //Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
             Texture pigTexture2 = new Texture(Gdx.files.internal("assets/pig2.png"));
             Texture pigTexture3 = new Texture(Gdx.files.internal("assets/pig3.png"));
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
-            Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
+            //Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
 
-            pigs1.add(new Pig(world,pigTexture1, 1080, 350));
-            pigs1.add(new Pig(world,pigTexture2, 1390, 450));
-            pigs1.add(new Pig(world,pigTexture3, 1425, 300));
+            //pigs1.add(new Pig(world,pigTexture1, 1100, 350));
+            pigs1.add(new Pig(world,pigTexture2, 1350, 450));
+            pigs1.add(new Pig(world,pigTexture3, 1475, 300));
             pigs1.add(new Pig(world,pigTexture4, 1225, 500));
-            pigs1.add(new Pig(world,pigTexture5, 1390, 565));
+            //pigs1.add(new Pig(world,pigTexture5, 1390, 565));
         }
 
         if (level == 2) {
@@ -278,7 +278,6 @@ public class GameScreen implements Screen {
         //handleInput(redBird1);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        world.step(1 / 60f, 6, 2);
         createGround();
         createSlingshot();
         batch.begin();
@@ -359,6 +358,10 @@ public class GameScreen implements Screen {
                 winScreen.dispose();
             }
         }
+
+        world.step(1 / 60f, 6, 2);
+        world.step(1 / 60f, 6, 2);
+        world.step(1 / 60f, 6, 2);
 
         batch.end();
         handleInput();
