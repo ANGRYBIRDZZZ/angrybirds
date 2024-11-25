@@ -222,10 +222,10 @@ public class GameScreen implements Screen {
 
         }
 
-        winScreen = new WinScreen();
 
         Gdx.input.setInputProcessor(stage);
     }
+
 
     private void createButtons() {
         TextButtonStyle buttonStyle = new TextButtonStyle();
@@ -309,7 +309,7 @@ public class GameScreen implements Screen {
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         if (Gdx.input.isKeyPressed(Input.Keys.W) && !showWinScreen) {
             showWinScreen = true;
-            winScreen = new WinScreen();
+            winScreen = new WinScreen(game);
         }
 
         if (!showWinScreen) {
@@ -376,12 +376,12 @@ public class GameScreen implements Screen {
                 }
             }
         } else {
-            winScreen.render(batch);
 
-            if (Gdx.input.isKeyPressed(Input.Keys.H)) {
-                showWinScreen = false;
-                winScreen.dispose();
-            }
+
+            //if (Gdx.input.isKeyPressed(Input.Keys.H)) {
+              //  showWinScreen = false;
+               // winScreen.dispose();
+            //}
         }
 
         world.step(1 / 60f, 6, 2);
@@ -548,6 +548,16 @@ public class GameScreen implements Screen {
 
             }
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            game.setScreen(new WinScreen(game));
+            dispose();
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.L)) {
+            game.setScreen(new LoseScreen(game, level));
+            dispose();
+        }
+
         SpriteBatch sb=new SpriteBatch();
         sb.begin();
         sb.draw(new Texture("yellowbird1.png"),bird.x,bird.y);
