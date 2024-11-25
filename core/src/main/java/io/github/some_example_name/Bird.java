@@ -36,6 +36,8 @@ public abstract class Bird {
         fixtureDef.friction = 0.5f;
         fixtureDef.restitution = 0.5f; // Bounciness
 
+        body.setUserData(this);
+
         Vector2 gravityForce = new Vector2(0, -200f);  // Adjust the force as necessary
         this.body.applyForceToCenter(gravityForce, true);
         body.setFixedRotation(true);
@@ -45,7 +47,7 @@ public abstract class Bird {
     }
 
     public void draw(SpriteBatch batch, float width, float height) {
-        batch.draw(texture, this.body.getPosition().x*2.1f-50, this.body.getPosition().y*1.95f-40, width, height);
+        batch.draw(texture, this.body.getPosition().x*2.15f-width/2f, this.body.getPosition().y*1.95f-40, width, height);
     }
 
     public void setPosition(float x, float y) {

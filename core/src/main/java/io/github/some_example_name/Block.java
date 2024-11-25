@@ -9,6 +9,7 @@ public abstract class Block {
     public float width;
     public float height;
     public Texture texture;
+    public int health;
 
     public Block(World world, float x, float y, float width, float height) {
         // Create the body definition
@@ -28,6 +29,8 @@ public abstract class Block {
         fixtureDef.density = 0.05f;
         fixtureDef.friction = 0.005f;
         fixtureDef.restitution = 0.2f; // Adjust for bounciness if needed
+
+        body.setUserData(this);
 
         body.setFixedRotation(true);
         // Attach the fixture to the body

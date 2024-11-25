@@ -10,6 +10,7 @@ public class Glass extends Block {
     public Glass(World world, Texture texture, float x, float y) {
         super(world, x, y, texture.getWidth(), texture.getHeight());
         this.texture = texture;
+        this.health =1;
     }
 
     @Override

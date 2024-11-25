@@ -5,11 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class MediumPig extends Pig {
-    private int health;
 
     public MediumPig(World world, Texture texture, float x, float y) {
         super(world, texture, x, y);
-        this.health = 20; // Default health for medium pig
+        this.health = 2; // Default health for medium pig
     }
 
     public void takeHit(int damage) {

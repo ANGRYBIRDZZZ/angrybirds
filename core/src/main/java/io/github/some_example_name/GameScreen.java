@@ -52,7 +52,7 @@ public class GameScreen implements Screen {
     private Viewport viewport;
     List<Wood> woodBlocks = new ArrayList<>();
     private List<Pig> pigs1;
-    private List<Glass> glasses;
+    private List<Glass> glassBlocks;
     private List<Pig> pigs3;
     private List<Metal> metalBlocks;
     private List<Pig> pigs2;
@@ -62,6 +62,10 @@ public class GameScreen implements Screen {
     private Vector2 slingPosition;// Position of the slingshot
     private Vector2 dragPosition=new Vector2(0,0); // Position while dragging
     private ArrayList<Bird> birds;
+    public static ArrayList<Block> toRemoveblocks = new ArrayList<>();
+    public static ArrayList<Pig> toRemovepigs = new ArrayList<>();
+    public ArrayList<Pig> pigs;
+
 
 
     public GameScreen(Game game, int level) {
@@ -85,6 +89,7 @@ public class GameScreen implements Screen {
         parameter.size = 24;
         buttonFont = generator.generateFont(parameter);
         generator.dispose();
+        pigs = new ArrayList<>();
 
         createButtons();
 
@@ -117,19 +122,17 @@ public class GameScreen implements Screen {
             //woodBlocks.add(new Wood(world,woodTexture5, 1300, 280));
             woodBlocks.add(new Wood(world,woodTexture6, 1450, 280));
 
-            pigs1 = new ArrayList<>();
-
-            //Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
-            Texture pigTexture2 = new Texture(Gdx.files.internal("assets/pig2.png"));
+            Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
+            //Texture pigTexture2 = new Texture(Gdx.files.internal("assets/pig2.png"));
             Texture pigTexture3 = new Texture(Gdx.files.internal("assets/pig3.png"));
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
-            //Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
+            Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
 
-            //pigs1.add(new Pig(world,pigTexture1, 1100, 350));
-            pigs1.add(new Pig(world,pigTexture2, 1350, 450));
-            pigs1.add(new Pig(world,pigTexture3, 1475, 300));
-            pigs1.add(new Pig(world,pigTexture4, 1250, 500));
-            //pigs1.add(new Pig(world,pigTexture5, 1390, 565));
+            pigs.add(new SmallPig(world,pigTexture1, 1350, 450));
+            //pis1.add(new Pig(world,pigTexture2, 1350, 450));
+            //pigs1.add(new Pig(world,pigTexture3, 1475, 300));
+            pigs.add(new MediumPig(world,pigTexture4, 1250, 500));
+            pigs.add(new LargePig(world,pigTexture5, 1475, 300));
         }
 
         if (level == 2) {
@@ -161,19 +164,17 @@ public class GameScreen implements Screen {
             metalBlocks.add(new Metal(world,metalTexture4, 1425, 260)); // Adjust x and y as needed
             metalBlocks.add(new Metal(world,metalTexture5, 1425, 475)); // Adjust x and y as needed
 
-            pigs2 = new ArrayList<>();
-
             Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
             Texture pigTexture2 = new Texture(Gdx.files.internal("assets/pig2.png"));
-            Texture pigTexture3 = new Texture(Gdx.files.internal("assets/pig3.png"));
+            //Texture pigTexture3 = new Texture(Gdx.files.internal("assets/pig3.png"));
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
             Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
 
-            pigs2.add(new Pig(world,pigTexture1, 1260, 425)); // Adjust x and y as needed
+            pigs.add(new SmallPig(world,pigTexture1, 1260, 425)); // Adjust x and y as needed
             //pigs2.add(new Pig(world,pigTexture2, 1500, 260)); // Adjust x and y as needed
-            pigs2.add(new Pig(world,pigTexture3, 1405, 480)); // Adjust x and y as needed
-            pigs2.add(new Pig(world,pigTexture4, 1110, 610)); // Adjust x and y as needed
-            pigs2.add(new Pig(world,pigTexture5, 1260, 275)); // Adjust x and y as needed
+            //pigs2.add(new Pig(world,pigTexture3, 1405, 480)); // Adjust x and y as needed
+            pigs.add(new MediumPig(world,pigTexture4, 1110, 610)); // Adjust x and y as needed
+            pigs.add(new LargePig(world,pigTexture5, 1260, 275)); // Adjust x and y as needed
 
 
         }
@@ -189,7 +190,7 @@ public class GameScreen implements Screen {
             blueBird2 = new BlueBird(world,blueBirdTexture2, 140, 165);
             blueBird3 = new BlueBird(world,blueBirdTexture3, 180, 165);
 
-            glasses = new ArrayList<>();
+            glassBlocks = new ArrayList<>();
 
             Texture glassTexture1 = new Texture(Gdx.files.internal("assets/glass1.png"));
             Texture glassTexture2 = new Texture(Gdx.files.internal("assets/glass2.png"));
@@ -198,16 +199,14 @@ public class GameScreen implements Screen {
             Texture glassTexture5 = new Texture(Gdx.files.internal("assets/glass5.png"));
 
             //glasses.add(new Glass(world,glassTexture1, 1400, 175));
-            glasses.add(new Glass(world,glassTexture2, 1150, 175));
-            glasses.add(new Glass(world,glassTexture3, 1520, 500));
-            glasses.add(new Glass(world,glassTexture4, 1520, 475));
-            glasses.add(new Glass(world,glassTexture5, 1300, 325));
+            glassBlocks.add(new Glass(world,glassTexture2, 1150, 175));
+            glassBlocks.add(new Glass(world,glassTexture3, 1520, 500));
+            glassBlocks.add(new Glass(world,glassTexture4, 1520, 475));
+            glassBlocks.add(new Glass(world,glassTexture5, 1300, 325));
 
             birds.add(blueBird1);
             birds.add(blueBird2);
             birds.add(blueBird3);
-
-            pigs3 = new ArrayList<>();
 
             Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
             Texture pigTexture2 = new Texture(Gdx.files.internal("assets/pig2.png"));
@@ -215,11 +214,11 @@ public class GameScreen implements Screen {
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
             Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
 
-            pigs3.add(new Pig(world,pigTexture1, 1300, 325)); // Adjust x and y as needed
+            pigs.add(new SmallPig(world,pigTexture1, 1300, 325)); // Adjust x and y as needed
             //pigs3.add(new Pig(world,pigTexture2, 1400, 325)); // Adjust x and y as needed
             //pigs3.add(new Pig(world,pigTexture3, 1410, 205)); // Adjust x and y as needed
-            pigs3.add(new Pig(world,pigTexture4, 1100, 325)); // Adjust x and y as needed
-            pigs3.add(new Pig(world,pigTexture5, 1500, 400)); // Adjust x and y as needed
+            pigs.add(new MediumPig(world,pigTexture4, 1100, 325)); // Adjust x and y as needed
+            pigs.add(new LargePig(world,pigTexture5, 1500, 400)); // Adjust x and y as needed
 
         }
 
@@ -275,6 +274,32 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        world.setContactListener(new Collisions());
+        for (Block block : toRemoveblocks) {
+            if ( block instanceof Metal) {
+                metalBlocks.remove(block);
+                block.texture.dispose();
+                world.destroyBody(block.body);
+            } else if (block instanceof Wood) {
+                woodBlocks.remove(block);
+                block.texture.dispose();
+                world.destroyBody(block.body);
+            } else if (block instanceof Glass) {
+                glassBlocks.remove(block);
+                block.texture.dispose();
+                world.destroyBody(block.body);
+            }
+        }
+
+        for (Pig pig : toRemovepigs) {
+            pigs.remove(pig);
+            pig.texture.dispose();
+            world.destroyBody(pig.body);
+        }
+
+        toRemoveblocks.clear();
+        toRemovepigs.clear();
+
         //handleInput(redBird1);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -301,7 +326,7 @@ public class GameScreen implements Screen {
                 float pigWidth = 115;  // Set desired width
                 float pigHeight = 100; // Set desired height
 
-                for (Pig pig : pigs1) {
+                for (Pig pig : pigs) {
                     pig.draw(batch, pigWidth, pigHeight);
                 }
             }
@@ -322,7 +347,7 @@ public class GameScreen implements Screen {
                 float pigWidth = 115;
                 float pigHeight = 100;
 
-                for (Pig pig : pigs2) {
+                for (Pig pig : pigs) {
                     pig.draw(batch, pigWidth, pigHeight);
                 }
             }
@@ -339,14 +364,14 @@ public class GameScreen implements Screen {
                 float glassWidth = 150;
                 float glassHeight = 150;
 
-                for (Glass glass : glasses) {
+                for (Glass glass : glassBlocks) {
                     glass.draw(batch);
                 }
 
                 float pigWidth = 115;
                 float pigHeight = 100;
 
-                for (Pig pig : pigs3) {
+                for (Pig pig : pigs) {
                     pig.draw(batch, pigWidth, pigHeight);
                 }
             }
@@ -497,7 +522,6 @@ public class GameScreen implements Screen {
             }
 
             if (isDragging) {
-                System.out.printf("hi");
                 // Update drag position
                 dragPosition.set(touchPos.x, touchPos.y);
                 bird.body.setTransform(touchPos.x/2f, touchPos.y/2f, bird.body.getAngle());

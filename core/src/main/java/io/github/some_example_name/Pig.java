@@ -5,10 +5,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Pig {
-    private Texture texture;
+    public Texture texture;
     public Body body;
     public float x;
     public float y;
+    public int health;
 
     public Pig(World world, Texture texture, float x, float y) {
         this.texture = texture;
@@ -30,6 +31,8 @@ public class Pig {
         fixtureDef.density = 0.05f; // Adjust density for desired physics behavior
         fixtureDef.friction = 0.25f; // Friction for realistic movement
         fixtureDef.restitution = 0.1f; // Bounciness for some impact response
+
+        body.setUserData(this);
 
         body.setFixedRotation(true);
         // Attach the fixture to the body

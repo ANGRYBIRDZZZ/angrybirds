@@ -10,7 +10,7 @@ public class Metal extends Block {
     public Metal(World world, Texture texture, float x, float y) {
         super(world, x, y, texture.getWidth(), texture.getHeight());
         this.texture = texture;
-
+        this.health=3;
     }
 
     @Override
