@@ -18,7 +18,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class ResumedScreen implements Screen {
+public class PausedScreen implements Screen {
     private Game game;
     private SpriteBatch batch;
     private Texture background;
@@ -26,9 +26,8 @@ public class ResumedScreen implements Screen {
     private BitmapFont buttonFont;
     private ShapeRenderer shapeRenderer;
 
-    public ResumedScreen(Game game) {
+    public PausedScreen(Game game) {
         this.game = game;
-
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
         shapeRenderer = new ShapeRenderer();
@@ -42,23 +41,38 @@ public class ResumedScreen implements Screen {
         generator.dispose();
 
         TextButton backButton = createButton("Back", buttonFont);
+        TextButton resumeGameButton = createButton("Resume Game", buttonFont);
         TextButton saveButton = createButton("Save", buttonFont);
         TextButton exitButton = createButton("Exit", buttonFont);
 
         backButton.setPosition(20, Gdx.graphics.getHeight() - backButton.getHeight() - 20);
-        saveButton.setPosition(Gdx.graphics.getWidth() - 100, 20);
+        resumeGameButton.setSize(200, 60); // Adjust width and height as needed
+        saveButton.setSize(200, 60); // Adjust width and height as needed
         exitButton.setPosition(20, 20);
-
+        resumeGameButton.setPosition(
+            (Gdx.graphics.getWidth() - resumeGameButton.getWidth()) / 2,
+            (Gdx.graphics.getHeight() / 2) + 50 // Offset to place it slightly above
+        );
+        saveButton.setPosition(
+            (Gdx.graphics.getWidth() - saveButton.getWidth()) / 2,
+            (Gdx.graphics.getHeight() / 2) - 50 // Offset to place it slightly below
+        );
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new HomePage(game));
             }
         });
+        resumeGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            }
+        });
+
         saveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new HomePage(game));
+                game.setScreen(new ResumedScreen(game));
             }
         });
 
@@ -70,10 +84,9 @@ public class ResumedScreen implements Screen {
         });
 
         stage.addActor(backButton);
+        stage.addActor(resumeGameButton);
         stage.addActor(saveButton);
         stage.addActor(exitButton);
-
-        createSavedGameButtons();
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -84,29 +97,6 @@ public class ResumedScreen implements Screen {
         style.fontColor = Color.WHITE;
         return new TextButton(text, style);
     }
-
-    private void createSavedGameButtons() {
-        int numberOfButtons = 4;
-        float buttonHeight = 50;
-        float spacing = 10;
-
-        float totalHeight = numberOfButtons * buttonHeight + (numberOfButtons - 1) * spacing;
-        float startY = (Gdx.graphics.getHeight() - totalHeight) / 2;
-
-        for (int i = 1; i <= numberOfButtons; i++) {
-            String buttonText = "Saved Game " + i;
-            TextButton savedGameButton = createButton(buttonText, buttonFont);
-            savedGameButton.setPosition(Gdx.graphics.getWidth() / 2 - savedGameButton.getWidth() / 2, startY + (i - 1) * (buttonHeight + spacing));
-            savedGameButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    game.setScreen(new SecondScreen(game));
-                }
-            });
-            stage.addActor(savedGameButton);
-        }
-    }
-
     @Override
     public void show() {
     }
