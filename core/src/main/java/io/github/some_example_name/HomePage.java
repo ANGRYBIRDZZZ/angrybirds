@@ -34,7 +34,7 @@ public class HomePage implements Screen {
         stage = new Stage(new ScreenViewport());
         shapeRenderer = new ShapeRenderer();
 
-        background = new Texture(Gdx.files.internal("assets/angrybirdsss.jpg"));
+        background = new Texture(Gdx.files.internal("assets/angrybirdsss.png"));
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();

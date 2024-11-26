@@ -10,6 +10,7 @@ public class Pig {
     public float x;
     public float y;
     public int health;
+    public int width, height;
 
     public Pig(World world, Texture texture, float x, float y) {
         this.texture = texture;
@@ -43,7 +44,7 @@ public class Pig {
     }
 
     public void draw(SpriteBatch batch, float width, float height) {
-        batch.draw(texture, this.body.getPosition().x*2.18f-95, this.body.getPosition().y*2f-60, width, height);
+        batch.draw(texture, this.body.getPosition().x*2.18f-50-width/15-width/3, this.body.getPosition().y*2f-55-height/100, width, height);
 
     }
 

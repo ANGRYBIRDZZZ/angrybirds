@@ -3,6 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -29,6 +30,9 @@ public class LoseScreen implements Screen {
     public LoseScreen(Game game, int level) {
         this.game = game;
 
+        Music freebird = Gdx.audio.newMusic(Gdx.files.internal("loseSound.mp3"));
+        freebird.setVolume(0.5f);
+        freebird.play();
         // Initialize essential components
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport());

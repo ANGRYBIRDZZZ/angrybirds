@@ -65,5 +65,7 @@ public abstract class Bird {
         texture.dispose();
     }
 
-    public abstract Rectangle getBounds();
+    public Rectangle getBounds() {
+        return new Rectangle(x-10,y-20, 50, 50);
+    }
 }

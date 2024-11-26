@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -25,7 +24,6 @@ import java.io.FileWriter;
 import java.util.*;
 import com.badlogic.gdx.Input; // Add this import
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 public class GameScreen implements Screen {
     private Game game;
@@ -56,9 +54,7 @@ public class GameScreen implements Screen {
     private List<Pig> pigs3;
     private List<Metal> metalBlocks;
     private List<Pig> pigs2;
-    private WinScreen winScreen;
-    private boolean showWinScreen = false;
-    private boolean isDragging = false;
+    private boolean isPulling = false;
     private Vector2 slingPosition;// Position of the slingshot
     private Vector2 dragPosition=new Vector2(0,0); // Position while dragging
     private ArrayList<Bird> birds;
@@ -66,6 +62,8 @@ public class GameScreen implements Screen {
     public static ArrayList<Pig> toRemovepigs = new ArrayList<>();
     public ArrayList<Pig> pigs;
     private boolean isPaused = false;
+    public Bird launchedBird;
+    Music freebird;
 
     public GameScreen(Game game, int level) {
         this.game = game;
@@ -90,9 +88,13 @@ public class GameScreen implements Screen {
         buttonFont = generator.generateFont(parameter);
         generator.dispose();
         pigs = new ArrayList<>();
+        //freebird = Gdx.audio.newMusic(Gdx.files.internal("freebird.mp3"));
+        //freebird.setLooping(true);
+        //freebird.setVolume(0.5f);
+        //freebird.play();
         createButtons();
         if (level == 1) {
-            slingPosition=new Vector2(370,490);
+            slingPosition=new Vector2(373,515);
             world=new World(new Vector2(0,-15),true);
             Texture redBirdTexture1 = new Texture(Gdx.files.internal("assets/redbird1.png"));
             Texture redBirdTexture2 = new Texture(Gdx.files.internal("assets/redbird2.png"));
@@ -120,7 +122,7 @@ public class GameScreen implements Screen {
             pigs.add(new LargePig(world,pigTexture5, 1475, 300));
         }
         if (level == 2) {
-            slingPosition=new Vector2(370,450);
+            slingPosition=new Vector2(373,475);
             world=new World(new Vector2(0,-10),true);
             Texture yellowBirdTexture1 = new Texture(Gdx.files.internal("assets/yellowbird1.png"));
             Texture yellowBirdTexture2 = new Texture(Gdx.files.internal("assets/yellowbird2.png"));
@@ -151,7 +153,7 @@ public class GameScreen implements Screen {
             pigs.add(new LargePig(world,pigTexture5, 1260, 275)); // Adjust x and y as needed
         }
         if (level == 3) {
-            slingPosition=new Vector2(375,350);
+            slingPosition=new Vector2(373,375);
             world=new World(new Vector2(0,-20),true);
             Texture blueBirdTexture1 = new Texture(Gdx.files.internal("assets/bluebird1.png"));
             Texture blueBirdTexture2 = new Texture(Gdx.files.internal("assets/bluebird2.png"));
@@ -181,7 +183,6 @@ public class GameScreen implements Screen {
             pigs.add(new MediumPig(world,pigTexture4, 1100, 325)); // Adjust x and y as needed
             pigs.add(new LargePig(world,pigTexture5, 1500, 400)); // Adjust x and y as needed
         }
-        winScreen = new WinScreen(game);
         Gdx.input.setInputProcessor(stage);
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,6 +196,7 @@ public class GameScreen implements Screen {
         createButton("Back", 20, Gdx.graphics.getHeight() - 50, buttonStyle, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                //freebird.stop();
                 game.setScreen(new ChooseLevelScreen(game));
             }
         });
@@ -202,6 +204,7 @@ public class GameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 isPaused = true; // Set the paused flag
+                //freebird.stop();
                 game.setScreen(new PausedScreen(game, GameScreen.this)); // Pass GameScreen instance
             }
         });
@@ -209,12 +212,14 @@ public class GameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 saveGameState();
+                //freebird.stop();
                 game.setScreen(new ResumedScreen(game));
             }
         });
         createButton("Home", 20, 20, buttonStyle, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                //freebird.stop();
                 game.setScreen(new HomePage(game));
             }
         });
@@ -236,6 +241,21 @@ public class GameScreen implements Screen {
     }
     @Override
     public void render(float delta) {
+        if (pigs.isEmpty()) {
+            //freebird.stop();
+            game.setScreen(new WinScreen(game));
+        } else if (birds.isEmpty() &&  (!isInframe(launchedBird) || launchedBird.body.getLinearVelocity().epsilonEquals(0,0))) {
+            //freebird.stop();
+            game.setScreen(new LoseScreen(game,level));
+
+        }
+
+        for (Pig pig : pigs) {
+            if (!isInframe((pig))) {
+                toRemovepigs.add(pig);
+            }
+        }
+
 
         if (isPaused) {
             return; // Skip rendering and updates if the game is paused
@@ -268,13 +288,11 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         createGround();
         createSlingshot();
+
         batch.begin();
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && !showWinScreen) {
-            showWinScreen = true;
-            winScreen = new WinScreen(game);
-        }
-        if (!showWinScreen) {
+
+
             if (level == 1) {
                 batch.draw(slingshotRight, 400, 290, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f);
                 if (redBird1 != null) redBird1.draw(batch, 100, 100);
@@ -284,10 +302,9 @@ public class GameScreen implements Screen {
                 for (Wood block : woodBlocks) {
                     block.draw(batch);
                 }
-                float pigWidth = 115;  // Set desired width
-                float pigHeight = 100; // Set desired height
+
                 for (Pig pig : pigs) {
-                    pig.draw(batch, pigWidth, pigHeight);
+                    pig.draw(batch, pig.width, pig.height);
                 }
             }
             if (level == 2) {
@@ -322,13 +339,20 @@ public class GameScreen implements Screen {
                     pig.draw(batch, pigWidth, pigHeight);
                 }
             }
-        }
+
 
         world.step(1 / 60f, 6, 2);
         world.step(1 / 60f, 6, 2);
         world.step(1 / 60f, 6, 2);
 
         batch.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(0.545f,0.271f,0.075f,1);
+        if (isPulling) {
+            shapeRenderer.line(slingPosition,dragPosition);
+            shapeRenderer.line(slingPosition.cpy().add(100,10),dragPosition);
+        }
+        shapeRenderer.end();
         handleInput();
         stage.act(delta);
         stage.draw();
@@ -394,7 +418,7 @@ public class GameScreen implements Screen {
         FixtureDef groundFixtureDef = new FixtureDef();
         groundFixtureDef.shape = groundShape;
         groundFixtureDef.friction = 1000f; // Adjust friction as needed
-        groundFixtureDef.restitution = 0.5f; // No bounce for the ground
+        groundFixtureDef.restitution = 0.01f; // No bounce for the ground
         groundBody.createFixture(groundFixtureDef);
         groundShape.dispose();
     }
@@ -424,11 +448,13 @@ public class GameScreen implements Screen {
     }
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.W)) {
+            //freebird.stop();
             game.setScreen(new WinScreen(game)); // Switch to WinScreen
             return; // Exit the method to prevent other input handling
         }
 
         if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.L)) {
+            //freebird.stop();
             game.setScreen(new LoseScreen(game, level)); // Switch to WinScreen
             return;
         }
@@ -438,24 +464,25 @@ public class GameScreen implements Screen {
         // Ensure the game uses an OrthographicCamera
         if (Gdx.input.isTouched()) {
             Vector2 touchPos = new Vector2(Gdx.input.getX(),Gdx.graphics.getHeight()-Gdx.input.getY());
-            if (!isDragging) {
+            if (!isPulling) {
                 if (bird.getBounds().contains(touchPos.x, touchPos.y)) {
-                    isDragging = true; // Start dragging
+                    isPulling = true; // Start dragging
                 }
             }
-            if (isDragging) {
+            if (isPulling) {
                 // Update drag position
                 dragPosition.set(touchPos.x, touchPos.y);
                 bird.body.setTransform(touchPos.x/2f, touchPos.y/2f, bird.body.getAngle());
             }
         } else {
-            if (isDragging) {
-                isDragging = false; // Stop dragging
+            if (isPulling) {
+                isPulling = false; // Stop dragging
                 // Calculate and apply launch velocity
                 Vector2 launchForce = slingPosition.cpy().sub(dragPosition).scl(900000000f);
                 launchForce.y*=30;
                 launchForce.x*=20;// Scale multiplier as needed
                 bird.body.applyLinearImpulse(launchForce, bird.body.getWorldCenter(), true);
+                launchedBird = bird;
                 birds.remove(0);
                 if (!birds.isEmpty()){
                 birds.get(0).body.setTransform(slingPosition.x/1.8f-5,slingPosition.y/1.8f+200,bird.body.getAngle());
@@ -545,5 +572,23 @@ public class GameScreen implements Screen {
         saveBirdPositions();
         savePigPositions();
         saveBlockPositions();
+    }
+
+    public boolean isInframe(Pig pig) {
+        if (pig.body.getPosition().x > 1920/1.8f || pig.body.getPosition().x <0 || pig.body.getPosition().y <0 || pig.body.getPosition().y > 1200/1.8f) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean isInframe(Bird bird) {
+        if (bird.body.getPosition().x > 1920/1.8f || bird.body.getPosition().x <0 || bird.body.getPosition().y <0 || bird.body.getPosition().y > 1200/1.8f) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }

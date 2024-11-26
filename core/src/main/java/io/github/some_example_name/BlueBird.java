@@ -10,9 +10,4 @@ public class BlueBird extends Bird {
         this.body.getFixtureList().get(0).setRestitution(0.1f);
     }
 
-
-    @Override
-    public Rectangle getBounds() {
-        return new Rectangle(x,y, 14, 14);
-    }
 }
