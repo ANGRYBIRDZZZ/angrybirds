@@ -181,7 +181,7 @@ public class GameScreen implements Screen {
             pigs.add(new MediumPig(world,pigTexture4, 1100, 325)); // Adjust x and y as needed
             pigs.add(new LargePig(world,pigTexture5, 1500, 400)); // Adjust x and y as needed
         }
-        winScreen = new WinScreen();
+        winScreen = new WinScreen(game);
         Gdx.input.setInputProcessor(stage);
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -272,7 +272,7 @@ public class GameScreen implements Screen {
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         if (Gdx.input.isKeyPressed(Input.Keys.W) && !showWinScreen) {
             showWinScreen = true;
-            winScreen = new WinScreen();
+            winScreen = new WinScreen(game);
         }
         if (!showWinScreen) {
             if (level == 1) {
@@ -322,13 +322,8 @@ public class GameScreen implements Screen {
                     pig.draw(batch, pigWidth, pigHeight);
                 }
             }
-        } else {
-            winScreen.render(batch);
-            if (Gdx.input.isKeyPressed(Input.Keys.H)) {
-                showWinScreen = false;
-                winScreen.dispose();
-            }
         }
+
         world.step(1 / 60f, 6, 2);
         world.step(1 / 60f, 6, 2);
         world.step(1 / 60f, 6, 2);
@@ -428,6 +423,16 @@ public class GameScreen implements Screen {
         groundShape.dispose();
     }
     private void handleInput() {
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.W)) {
+            game.setScreen(new WinScreen(game)); // Switch to WinScreen
+            return; // Exit the method to prevent other input handling
+        }
+
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.L)) {
+            game.setScreen(new LoseScreen(game, level)); // Switch to WinScreen
+            return;
+        }
+
         if (birds.isEmpty()) return; // No birds left to launch
         Bird bird = birds.get(0); // Get the first bird in the list
         // Ensure the game uses an OrthographicCamera
