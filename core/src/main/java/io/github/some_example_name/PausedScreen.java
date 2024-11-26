@@ -25,12 +25,15 @@ public class PausedScreen implements Screen {
     private Stage stage;
     private BitmapFont buttonFont;
     private ShapeRenderer shapeRenderer;
+    private GameScreen gameScreen;
 
-    public PausedScreen(Game game) {
+    public PausedScreen(Game game, GameScreen gameScreen) {
         this.game = game;
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
         shapeRenderer = new ShapeRenderer();
+        this.gameScreen = gameScreen;
+
 
         background = new Texture(Gdx.files.internal("assets/angrybirdzzz.jpg")); // Replace with your background image path
 
@@ -66,13 +69,17 @@ public class PausedScreen implements Screen {
         resumeGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                gameScreen.setPaused(false); // Set the paused flag in GameScreen
+                game.setScreen(gameScreen); // Return to the GameScreen
             }
         });
 
         saveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new ResumedScreen(game));
+                gameScreen.saveGameState();
+                game.setScreen(new HomePage(game));
+                game.setScreen(new ResumedScreen(game, gameScreen));
             }
         });
 

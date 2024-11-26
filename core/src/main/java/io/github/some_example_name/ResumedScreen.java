@@ -1,5 +1,4 @@
 package io.github.some_example_name;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -25,10 +24,11 @@ public class ResumedScreen implements Screen {
     private Stage stage;
     private BitmapFont buttonFont;
     private ShapeRenderer shapeRenderer;
+    private GameScreen gameScreen;
 
-    public ResumedScreen(Game game) {
+    public ResumedScreen(Game game, GameScreen gameScreen) {
         this.game = game;
-
+        this.gameScreen = gameScreen;
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
         shapeRenderer = new ShapeRenderer();
@@ -58,10 +58,10 @@ public class ResumedScreen implements Screen {
         saveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                gameScreen.saveGameState();
                 game.setScreen(new HomePage(game));
             }
         });
-
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -77,7 +77,8 @@ public class ResumedScreen implements Screen {
 
         Gdx.input.setInputProcessor(stage);
     }
-
+    public ResumedScreen(Game game) {
+    }
     private TextButton createButton(String text, BitmapFont font) {
         TextButtonStyle style = new TextButtonStyle();
         style.font = font;
