@@ -494,14 +494,7 @@ public class GameScreen implements Screen {
         String fileName = "PigPositions.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write("Level: " + level + "\n");
-
-            // Combine all pig lists into one
-            List<Pig> allPigs = new ArrayList<>();
-            if (pigs1 != null) allPigs.addAll(pigs1);
-            if (pigs2 != null) allPigs.addAll(pigs2);
-            if (pigs3 != null) allPigs.addAll(pigs3);
-
-            for (Pig pig : allPigs) {
+            for (Pig pig : pigs) {
                 if (pig != null && pig.body != null) {
                     String type = pig.getClass().getSimpleName(); // Pig type
                     Vector2 velocity = pig.body.getLinearVelocity();
