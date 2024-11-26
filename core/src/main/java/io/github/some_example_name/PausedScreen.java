@@ -1,4 +1,5 @@
 package io.github.some_example_name;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -17,7 +18,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class ResumedScreen implements Screen {
+public class PausedScreen implements Screen {
     private Game game;
     private SpriteBatch batch;
     private Texture background;
@@ -26,12 +27,13 @@ public class ResumedScreen implements Screen {
     private ShapeRenderer shapeRenderer;
     private GameScreen gameScreen;
 
-    public ResumedScreen(Game game, GameScreen gameScreen) {
+    public PausedScreen(Game game, GameScreen gameScreen) {
         this.game = game;
-        this.gameScreen = gameScreen;
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
         shapeRenderer = new ShapeRenderer();
+        this.gameScreen = gameScreen;
+
 
         background = new Texture(Gdx.files.internal("assets/angrybirdzzz.jpg")); // Replace with your background image path
 
@@ -42,26 +44,45 @@ public class ResumedScreen implements Screen {
         generator.dispose();
 
         TextButton backButton = createButton("Back", buttonFont);
+        TextButton resumeGameButton = createButton("Resume Game", buttonFont);
         TextButton saveButton = createButton("Save", buttonFont);
         TextButton exitButton = createButton("Exit", buttonFont);
 
         backButton.setPosition(20, Gdx.graphics.getHeight() - backButton.getHeight() - 20);
-        saveButton.setPosition(Gdx.graphics.getWidth() - 100, 20);
+        resumeGameButton.setSize(200, 60); // Adjust width and height as needed
+        saveButton.setSize(200, 60); // Adjust width and height as needed
         exitButton.setPosition(20, 20);
-
+        resumeGameButton.setPosition(
+            (Gdx.graphics.getWidth() - resumeGameButton.getWidth()) / 2,
+            (Gdx.graphics.getHeight() / 2) + 50 // Offset to place it slightly above
+        );
+        saveButton.setPosition(
+            (Gdx.graphics.getWidth() - saveButton.getWidth()) / 2,
+            (Gdx.graphics.getHeight() / 2) - 50 // Offset to place it slightly below
+        );
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new HomePage(game));
             }
         });
+        resumeGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameScreen.setPaused(false); // Set the paused flag in GameScreen
+                game.setScreen(gameScreen); // Return to the GameScreen
+            }
+        });
+
         saveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gameScreen.saveGameState();
                 game.setScreen(new HomePage(game));
+                game.setScreen(new ResumedScreen(game, gameScreen));
             }
         });
+
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -70,44 +91,19 @@ public class ResumedScreen implements Screen {
         });
 
         stage.addActor(backButton);
+        stage.addActor(resumeGameButton);
         stage.addActor(saveButton);
         stage.addActor(exitButton);
 
-        createSavedGameButtons();
-
         Gdx.input.setInputProcessor(stage);
     }
-    public ResumedScreen(Game game) {
-    }
+
     private TextButton createButton(String text, BitmapFont font) {
         TextButtonStyle style = new TextButtonStyle();
         style.font = font;
         style.fontColor = Color.WHITE;
         return new TextButton(text, style);
     }
-
-    private void createSavedGameButtons() {
-        int numberOfButtons = 4;
-        float buttonHeight = 50;
-        float spacing = 10;
-
-        float totalHeight = numberOfButtons * buttonHeight + (numberOfButtons - 1) * spacing;
-        float startY = (Gdx.graphics.getHeight() - totalHeight) / 2;
-
-        for (int i = 1; i <= numberOfButtons; i++) {
-            String buttonText = "Saved Game " + i;
-            TextButton savedGameButton = createButton(buttonText, buttonFont);
-            savedGameButton.setPosition(Gdx.graphics.getWidth() / 2 - savedGameButton.getWidth() / 2, startY + (i - 1) * (buttonHeight + spacing));
-            savedGameButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    game.setScreen(new SecondScreen(game));
-                }
-            });
-            stage.addActor(savedGameButton);
-        }
-    }
-
     @Override
     public void show() {
     }
