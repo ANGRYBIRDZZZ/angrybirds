@@ -10,7 +10,7 @@ public class SmallPig extends Pig {
         this.health = 1; // Default health for small pig
         this.height=70;
         this.width=78;
-        this.body.getFixtureList().get(0).getShape().setRadius(18);
+        this.body.getFixtureList().get(0).getShape().setRadius(20);
     }
 
     public void takeHit(int damage) {
