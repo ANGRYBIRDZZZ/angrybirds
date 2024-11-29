@@ -45,12 +45,10 @@ public class HomePage implements Screen {
         buttonFont1 = generator.generateFont(parameter);
         generator.dispose();
 
-        // Create buttons
         TextButton startButton = createButton("New Game", buttonFont1);
         TextButton resumeButton = createButton("Resume", buttonFont1);
         TextButton exitButton = createButton("Exit", buttonFont1);
 
-        // Add listeners to buttons
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -73,14 +71,12 @@ public class HomePage implements Screen {
             }
         });
 
-        // Add buttons to the stage
         stage.addActor(startButton);
         stage.addActor(resumeButton);
         stage.addActor(exitButton);
 
         Gdx.input.setInputProcessor(stage);
 
-        // Layout buttons
         layoutButtons(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
@@ -95,24 +91,22 @@ public class HomePage implements Screen {
     }
 
     private void layoutButtons(float screenWidth, float screenHeight) {
-        float buttonWidth = 0.15f * screenWidth; // Button width as a percentage of screen width
-        float buttonHeight = 0.05f * screenHeight; // Button height as a percentage of screen height
+        float buttonWidth = 0.15f * screenWidth;
+        float buttonHeight = 0.05f * screenHeight;
 
-        float buttonSpacing = 10; // Space between buttons
-        float verticalOffset = screenHeight * 0.3f; // Offset from the top of the screen (30% down)
+        float buttonSpacing = 10;
+        float verticalOffset = screenHeight * 0.3f;
 
-        // Position the buttons
-        float centerY = screenHeight - verticalOffset - (3 * buttonHeight + 2 * buttonSpacing) -300;
+        float centerY = screenHeight - verticalOffset - (3 * buttonHeight + 2 * buttonSpacing) - 300;
 
-        stage.getActors().get(0).setSize(buttonWidth, buttonHeight); // Start button
-        stage.getActors().get(1).setSize(buttonWidth, buttonHeight); // Resume button
-        stage.getActors().get(2).setSize(buttonWidth, buttonHeight); // Exit button
+        stage.getActors().get(0).setSize(buttonWidth, buttonHeight);
+        stage.getActors().get(1).setSize(buttonWidth, buttonHeight);
+        stage.getActors().get(2).setSize(buttonWidth, buttonHeight);
 
-        stage.getActors().get(0).setPosition(screenWidth / 2 - buttonWidth / 2 -20, centerY + 2 * (buttonHeight + buttonSpacing)); // Start button
-        stage.getActors().get(1).setPosition(screenWidth / 2 - buttonWidth / 2 -20, centerY + buttonHeight + buttonSpacing); // Resume button
-        stage.getActors().get(2).setPosition(screenWidth / 2 - buttonWidth / 2 -20, centerY); // Exit button
+        stage.getActors().get(0).setPosition(screenWidth / 2 - buttonWidth / 2 - 20, centerY + 2 * (buttonHeight + buttonSpacing));
+        stage.getActors().get(1).setPosition(screenWidth / 2 - buttonWidth / 2 - 20, centerY + buttonHeight + buttonSpacing);
+        stage.getActors().get(2).setPosition(screenWidth / 2 - buttonWidth / 2 - 20, centerY);
     }
-
 
     @Override
     public void show() {}
@@ -123,14 +117,12 @@ public class HomePage implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        // Draw the background
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // Draw the heading texture at the top
-        float headingWidth = Gdx.graphics.getWidth() * 0.8f; // Scale it to 80% of screen width
-        float headingHeight = headingWidth * (heading.getHeight() / (float) heading.getWidth()); // Maintain aspect ratio
-        float headingX = (Gdx.graphics.getWidth() - headingWidth) / 2; // Center the heading
-        float headingY = Gdx.graphics.getHeight() - headingHeight - 20; // Offset 20px from the top
+        float headingWidth = Gdx.graphics.getWidth() * 0.8f;
+        float headingHeight = headingWidth * (heading.getHeight() / (float) heading.getWidth());
+        float headingX = (Gdx.graphics.getWidth() - headingWidth) / 2;
+        float headingY = Gdx.graphics.getHeight() - headingHeight - 20;
         batch.draw(heading, headingX, headingY, headingWidth, headingHeight);
 
         batch.end();

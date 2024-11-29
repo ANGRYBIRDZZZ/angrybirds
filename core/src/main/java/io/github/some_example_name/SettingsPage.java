@@ -18,67 +18,56 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class SettingsPage implements Screen {
-    private Game game; // Reference to the main game
-    private SpriteBatch batch; // To draw textures
-    private Texture background; // Background image
-    private Stage stage; // For managing UI elements
-    private BitmapFont buttonFont; // Font for buttons
-    private ShapeRenderer shapeRenderer; // For drawing shapes
+    private Game game;
+    private SpriteBatch batch;
+    private Texture background;
+    private Stage stage;
+    private BitmapFont buttonFont;
+    private ShapeRenderer shapeRenderer;
 
     public SettingsPage(Game game) {
         this.game = game;
-        // Initialize SpriteBatch and Stage
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
         shapeRenderer = new ShapeRenderer();
 
-        // Load assets
-        background = new Texture(Gdx.files.internal("assets/settingsss.png")); // Replace with your settings image path
-        // Create fonts using FreeTypeFontGenerator
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf")); // Replace with your font path
+        background = new Texture(Gdx.files.internal("assets/settingsss.png"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 24; // Set font size to 24
+        parameter.size = 24;
 
-        buttonFont = generator.generateFont(parameter); // Generate the font
-        generator.dispose(); // Dispose of the generator after use
+        buttonFont = generator.generateFont(parameter);
+        generator.dispose();
 
-        // Create buttons
         TextButton backButton = createButton("Back", buttonFont);
+        backButton.setPosition(20, 20);
+        backButton.setSize(100, 50);
 
-        // Set button positions
-        backButton.setPosition(20, 20); // Bottom left
-        backButton.setSize(100, 50); // Set width and height
-
-        // Add button listener
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new HomePage(game)); // Go back to HomePage when clicked
+                game.setScreen(new HomePage(game));
             }
         });
 
-        // Add buttons to the stage
         stage.addActor(backButton);
 
-        // Set input processor
         Gdx.input.setInputProcessor(stage);
     }
 
     private TextButton createButton(String text, BitmapFont font) {
         TextButtonStyle style = new TextButtonStyle();
-        style.font = font; // Set button font
-        style.fontColor = Color.DARK_GRAY; // Set font color
+        style.font = font;
+        style.fontColor = Color.DARK_GRAY;
         return new TextButton(text, style);
     }
 
-    public void show() {
-        // Prepare your screen here.
-    }
-    public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1); // Clear the screen to white
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the buffer
+    public void show() {}
 
-        // Draw the background texture
+    public void render(float delta) {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         batch.begin();
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
@@ -86,17 +75,16 @@ public class SettingsPage implements Screen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0, 1, 1, 1);
 
-        TextButton backButton = (TextButton) stage.getActors().get(0); // Assuming the first actor is the back button
+        TextButton backButton = (TextButton) stage.getActors().get(0);
         shapeRenderer.rect(backButton.getX(), backButton.getY(), backButton.getWidth(), backButton.getHeight());
         shapeRenderer.end();
 
-        // Draw the stage (which contains buttons)
-        stage.act(delta); // Update the stage
-        stage.draw(); // Draw the stage
+        stage.act(delta);
+        stage.draw();
     }
-    public void resize(int width, int height) {
-        // Resize your screen here.
-    }
+
+    public void resize(int width, int height) {}
+
     public void pause() {}
 
     public void resume() {}
@@ -109,5 +97,4 @@ public class SettingsPage implements Screen {
         background.dispose();
         buttonFont.dispose();
     }
-
 }

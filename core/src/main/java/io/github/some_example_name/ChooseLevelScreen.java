@@ -27,7 +27,6 @@ public class ChooseLevelScreen implements Screen {
     private Texture episodeImage;
     private ShapeRenderer shapeRenderer;
 
-    // Textures for level buttons
     private Texture level1Texture, level2Texture, level3Texture;
 
     public ChooseLevelScreen(Game game) {

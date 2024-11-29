@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class MediumPig extends Pig {
     public MediumPig(World world, Texture texture, float x, float y) {
         super(world, texture, x, y);
-        this.health = 2; // Default health for medium pig
+        this.health = 2;
         this.height=100;
         this.width=115;
         this.body.getFixtureList().get(0).getShape().setRadius(25);

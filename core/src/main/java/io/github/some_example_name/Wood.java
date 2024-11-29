@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Wood extends Block {
 
     public Wood(World world, Texture texture, float x, float y) {
-        super(world, x, y, texture.getWidth(), texture.getHeight()); // Static for immovable blocks
+        super(world, x, y, texture.getWidth(), texture.getHeight());
         this.texture = texture;
         this.health =2;
     }

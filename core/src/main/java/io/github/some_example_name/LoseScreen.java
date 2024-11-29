@@ -24,7 +24,7 @@ public class LoseScreen implements Screen {
     private SpriteBatch batch;
     private Texture loseTexture;
     private BitmapFont buttonFont;
-    private BitmapFont titleFont; // Font for the title
+    private BitmapFont titleFont;
     private Stage stage;
     private ShapeRenderer shapeRenderer;
 
@@ -40,34 +40,28 @@ public class LoseScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
 
-        // Load textures
         try {
             loseTexture = new Texture(Gdx.files.internal("lose.png"));
         } catch (Exception e) {
             System.err.println("Error loading textures: " + e.getMessage());
         }
 
-        // Load title and button fonts
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf"));
 
-        // Title font parameters
         FreeTypeFontGenerator.FreeTypeFontParameter titleParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        titleParams.size = 200; // Larger size for the title
+        titleParams.size = 200;
         titleFont = generator.generateFont(titleParams);
 
-        // Button font parameters
         FreeTypeFontGenerator.FreeTypeFontParameter buttonParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        buttonParams.size = 35; // Smaller size for buttons
+        buttonParams.size = 35;
         buttonFont = generator.generateFont(buttonParams);
 
-        generator.dispose(); // Dispose after generating all fonts
+        generator.dispose();
 
-        // Create Buttons
         TextButton restartButton = createButton("Restart", buttonFont);
         TextButton homeButton = createButton("Homepage", buttonFont);
         TextButton exitButton = createButton("Exit", buttonFont);
 
-        // Add Listeners
         restartButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -91,19 +85,17 @@ public class LoseScreen implements Screen {
             }
         });
 
-        // Add buttons to stage
         stage.addActor(restartButton);
         stage.addActor(homeButton);
         stage.addActor(exitButton);
 
-        // Layout buttons
         layoutButtons(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     private TextButton createButton(String text, BitmapFont font) {
         TextButtonStyle style = new TextButtonStyle();
         style.font = font;
-        style.fontColor = Color.WHITE; // White text
+        style.fontColor = Color.WHITE;
         return new TextButton(text, style);
     }
 
@@ -112,10 +104,9 @@ public class LoseScreen implements Screen {
         float buttonHeight = 0.08f * screenHeight;
         float spacing = 20;
 
-        float rowY = screenHeight * 0.05f; // Vertical position for the button row
-        float startX = (screenWidth - (buttonWidth * 3 + spacing * 2)) / 2; // Center the buttons
+        float rowY = screenHeight * 0.05f;
+        float startX = (screenWidth - (buttonWidth * 3 + spacing * 2)) / 2;
 
-        // Position buttons horizontally
         for (int i = 0; i < stage.getActors().size; i++) {
             Actor button = stage.getActors().get(i);
             float x = startX + i * (buttonWidth + spacing);
@@ -131,21 +122,18 @@ public class LoseScreen implements Screen {
 
         batch.begin();
 
-        // Draw the background texture
         if (loseTexture != null) {
             batch.draw(loseTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
 
-        // Draw the title text
-        titleFont.setColor(Color.BLACK); // Black text for "Battle Lost!"
+        titleFont.setColor(Color.BLACK);
         float textWidth = titleFont.getRegion().getRegionWidth();
-        float x = (Gdx.graphics.getWidth() - textWidth) / 2 -25;
-        float y = Gdx.graphics.getHeight() - 125; // Position near the top
+        float x = (Gdx.graphics.getWidth() - textWidth) / 2 - 25;
+        float y = Gdx.graphics.getHeight() - 125;
         titleFont.draw(batch, "BATTLE LOST!", x, y);
 
         batch.end();
 
-        // Draw a black background for each button
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
 
@@ -154,14 +142,11 @@ public class LoseScreen implements Screen {
             y = actor.getY();
             float width = actor.getWidth();
             float height = actor.getHeight();
-
-            // Draw a rectangle slightly larger than the button
             shapeRenderer.rect(x - 2, y - 2, width, height);
         }
 
         shapeRenderer.end();
 
-        // Draw buttons
         stage.act(delta);
         stage.draw();
     }

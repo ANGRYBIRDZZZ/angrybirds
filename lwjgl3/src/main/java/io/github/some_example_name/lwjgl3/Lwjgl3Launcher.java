@@ -17,17 +17,13 @@ public class Lwjgl3Launcher {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("AngryBirds_AP");
 
-        // Start in full-screen mode
         configuration.setWindowedMode(1920, 1200);
 
-        // Allow the user to resize the window
         configuration.setResizable(false);
 
-        // Enable vsync
         configuration.useVsync(true);
         configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1);
 
-        // Set application window icons
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
 
         return configuration;

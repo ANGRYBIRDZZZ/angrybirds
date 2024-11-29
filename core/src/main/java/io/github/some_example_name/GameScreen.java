@@ -35,7 +35,6 @@ public class GameScreen implements Screen {
     private Texture background;
     private BitmapFont buttonFont;
     private ShapeRenderer shapeRenderer;
-    private Box2DDebugRenderer debugRenderer;
     private RedBird redBird1;
     private RedBird redBird2;
     private RedBird redBird3;
@@ -67,7 +66,6 @@ public class GameScreen implements Screen {
     public ArrayList<Pig> pigs;
     private boolean isPaused = false;
     public Bird launchedBird;
-    Music freebird;
 
     public GameScreen(Game game, int level) {
         this.game = game;
@@ -80,8 +78,7 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
         shapeRenderer = new ShapeRenderer();
-        debugRenderer = new Box2DDebugRenderer();
-        PausedScreen pausedScreen = new PausedScreen(game, this); // Passing 'this' to refer to the current GameScreen
+        PausedScreen pausedScreen = new PausedScreen(game, this);
         background = new Texture(Gdx.files.internal("assets/level" + level + ".jpg"));
         slingshotLeft = new Texture(Gdx.files.internal("assets/slingshotleft.png"));
         slingshotRight = new Texture(Gdx.files.internal("assets/slingshotright.png"));
@@ -93,14 +90,10 @@ public class GameScreen implements Screen {
         buttonFont = generator.generateFont(parameter);
         generator.dispose();
         pigs = new ArrayList<>();
-        //freebird = Gdx.audio.newMusic(Gdx.files.internal("freebird.mp3"));
-        //freebird.setLooping(true);
-        //freebird.setVolume(0.5f);
-        //freebird.play();
         createButtons();
         if (level == 1) {
-            slingPosition=new Vector2(373,515);
-            world=new World(new Vector2(0,-15),true);
+            slingPosition=new Vector2(373,500);
+            world=new World(new Vector2(0,-20),true);
             Texture redBirdTexture1 = new Texture(Gdx.files.internal("assets/redbird1.png"));
             Texture redBirdTexture2 = new Texture(Gdx.files.internal("assets/redbird2.png"));
             Texture redBirdTexture3 = new Texture(Gdx.files.internal("assets/redbird3.png"));
@@ -119,7 +112,6 @@ public class GameScreen implements Screen {
             woodBlocks.add(new Wood(world,woodTexture4, 1375, 280));
             woodBlocks.add(new Wood(world,woodTexture6, 1450, 280));
             Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
-            Texture pigTexture3 = new Texture(Gdx.files.internal("assets/pig3.png"));
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
             Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
             pigs.add(new SmallPig(world,pigTexture1, 1350, 450));
@@ -128,7 +120,7 @@ public class GameScreen implements Screen {
         }
         if (level == 2) {
             slingPosition=new Vector2(373,475);
-            world=new World(new Vector2(0,-10),true);
+            world=new World(new Vector2(0,-20),true);
             Texture yellowBirdTexture1 = new Texture(Gdx.files.internal("assets/yellowbird1.png"));
             Texture yellowBirdTexture2 = new Texture(Gdx.files.internal("assets/yellowbird2.png"));
             Texture yellowBirdTexture3 = new Texture(Gdx.files.internal("assets/yellowbird3.png"));
@@ -143,18 +135,17 @@ public class GameScreen implements Screen {
             birds.add(yellowBird1);
             birds.add(yellowBird2);
             birds.add(yellowBird3);
-            metalBlocks.add(new Metal(world,metalTexture1, 1125, 260)); // Adjust x and y as needed
-            metalBlocks.add(new Metal(world,metalTexture2, 1250, 260)); // Adjust x and y as needed
-            metalBlocks.add(new Metal(world,metalTexture3, 1300, 600)); // Adjust x and y as needed
-            metalBlocks.add(new Metal(world,metalTexture4, 1425, 260)); // Adjust x and y as needed
-            metalBlocks.add(new Metal(world,metalTexture5, 1425, 475)); // Adjust x and y as needed
+            metalBlocks.add(new Metal(world,metalTexture1, 1125, 260));
+            metalBlocks.add(new Metal(world,metalTexture2, 1250, 260));
+            metalBlocks.add(new Metal(world,metalTexture3, 1300, 600));
+            metalBlocks.add(new Metal(world,metalTexture4, 1425, 260));
+            metalBlocks.add(new Metal(world,metalTexture5, 1425, 475));
             Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
-            Texture pigTexture2 = new Texture(Gdx.files.internal("assets/pig2.png"));
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
             Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
-            pigs.add(new SmallPig(world,pigTexture1, 1260, 425)); // Adjust x and y as needed
-            pigs.add(new MediumPig(world,pigTexture4, 1110, 610)); // Adjust x and y as needed
-            pigs.add(new LargePig(world,pigTexture5, 1260, 275)); // Adjust x and y as needed
+            pigs.add(new SmallPig(world,pigTexture1, 1260, 400));
+            pigs.add(new MediumPig(world,pigTexture4, 1110, 350));
+            pigs.add(new LargePig(world,pigTexture5, 1260, 275));
         }
         if (level == 3) {
             slingPosition=new Vector2(373,375);
@@ -165,7 +156,6 @@ public class GameScreen implements Screen {
             blueBird1 = new BlueBird(world,blueBirdTexture1, 380, 350);
             blueBird2 = new BlueBird(world,blueBirdTexture2, 140, 165);
             blueBird3 = new BlueBird(world,blueBirdTexture3, 180, 165);
-            Texture glassTexture1 = new Texture(Gdx.files.internal("assets/glass1.png"));
             Texture glassTexture2 = new Texture(Gdx.files.internal("assets/glass2.png"));
             Texture glassTexture3 = new Texture(Gdx.files.internal("assets/glass5.png"));
             Texture glassTexture4 = new Texture(Gdx.files.internal("assets/glass2.png"));
@@ -178,13 +168,11 @@ public class GameScreen implements Screen {
             birds.add(blueBird2);
             birds.add(blueBird3);
             Texture pigTexture1 = new Texture(Gdx.files.internal("assets/pig1.png"));
-            Texture pigTexture2 = new Texture(Gdx.files.internal("assets/pig2.png"));
-            Texture pigTexture3 = new Texture(Gdx.files.internal("assets/pig3.png"));
             Texture pigTexture4 = new Texture(Gdx.files.internal("assets/pig4.png"));
             Texture pigTexture5 = new Texture(Gdx.files.internal("assets/pig5.png"));
-            pigs.add(new SmallPig(world,pigTexture1, 1300, 325)); // Adjust x and y as needed
-            pigs.add(new MediumPig(world,pigTexture4, 1100, 325)); // Adjust x and y as needed
-            pigs.add(new LargePig(world,pigTexture5, 1500, 400)); // Adjust x and y as needed
+            pigs.add(new SmallPig(world,pigTexture1, 1300, 325));
+            pigs.add(new MediumPig(world,pigTexture4, 1100, 325));
+            pigs.add(new LargePig(world,pigTexture5, 1500, 400));
         }
         Gdx.input.setInputProcessor(stage);
     }
@@ -202,8 +190,7 @@ public class GameScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         shapeRenderer = new ShapeRenderer();
         World world = new World(new Vector2(0,-15f), true);
-        debugRenderer = new Box2DDebugRenderer();
-        PausedScreen pausedScreen = new PausedScreen(game, this); // Passing 'this' to refer to the current GameScreen
+        PausedScreen pausedScreen = new PausedScreen(game, this);
         background = new Texture(Gdx.files.internal("assets/level" + level + ".jpg"));
         slingshotLeft = new Texture(Gdx.files.internal("assets/slingshotleft.png"));
         slingshotRight = new Texture(Gdx.files.internal("assets/slingshotright.png"));
@@ -226,22 +213,19 @@ public class GameScreen implements Screen {
         createButton("Back", 20, Gdx.graphics.getHeight() - 50, buttonStyle, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //freebird.stop();
                 game.setScreen(new ChooseLevelScreen(game));
             }
         });
         createButton("Pause", Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 50, buttonStyle, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                isPaused = true; // Set the paused flag
-                //freebird.stop();
+                isPaused = true;
                 game.setScreen(new PausedScreen(game, GameScreen.this)); // Pass GameScreen instance
             }
         });
         createButton("Home", 20, 20, buttonStyle, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //freebird.stop();
                 game.setScreen(new HomePage(game));
             }
         });
@@ -252,9 +236,7 @@ public class GameScreen implements Screen {
             }
         });
     }
-    private void createButton(String text, float x, float y, TextButtonStyle style) {
-        createButton(text, x, y, style, null);
-    }
+
     private void createButton(String text, float x, float y, TextButtonStyle style, ClickListener listener) {
         TextButton button = new TextButton(text, style);
         button.setPosition(x, y);
@@ -264,10 +246,8 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         if (pigs.isEmpty()) {
-            //freebird.stop();
             game.setScreen(new WinScreen(game));
         } else if (birds.isEmpty() &&  (!isInframe(launchedBird) || launchedBird.body.getLinearVelocity().epsilonEquals(0,0))) {
-            //freebird.stop();
             game.setScreen(new LoseScreen(game,level));
 
         }
@@ -280,7 +260,7 @@ public class GameScreen implements Screen {
 
 
         if (isPaused) {
-            return; // Skip rendering and updates if the game is paused
+            return;
         }
 
         world.setContactListener(new Collisions());
@@ -316,17 +296,14 @@ public class GameScreen implements Screen {
 
 
             if (level == 1) {
-                batch.draw(slingshotRight, 400, 290, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f);
-                //if (redBird1 != null) redBird1.draw(batch, 100, 100);
-                //if (redBird2 != null) redBird2.draw(batch, 100, 100);
-                //if (redBird3 != null) redBird3.draw(batch, 100, 100);
+                batch.draw(slingshotRight, 400, 275, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f);
                 for(Bird bird: birds){
                     bird.draw(batch, 100, 100);
                 }
                 if(launchedBird != null){
                     launchedBird.draw(batch, 100, 100);
                 }
-                batch.draw(slingshotLeft, 365, 400, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f);
+                batch.draw(slingshotLeft, 365, 385, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f);
                 for (Wood block : woodBlocks) {
                     block.draw(batch);
                 }
@@ -356,8 +333,6 @@ public class GameScreen implements Screen {
                 if (blueBird2 != null) blueBird2.draw(batch, 70, 70);
                 if (blueBird3 != null) blueBird3.draw(batch, 70, 70);
                 batch.draw(slingshotLeft, 365, 280, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f);
-                float glassWidth = 150;
-                float glassHeight = 150;
                 for (Glass glass : glassBlocks) {
                     glass.draw(batch);
                 }
@@ -384,7 +359,6 @@ public class GameScreen implements Screen {
         handleInput();
         stage.act(delta);
         stage.draw();
-        debugRenderer.render(world, camera.combined);
     }
     @Override
     public void resize(int width, int height) {
@@ -426,7 +400,6 @@ public class GameScreen implements Screen {
         }
     }
     private void createGround() {
-        // Define a static body for the ground
         BodyDef groundBodyDef = new BodyDef();
         if (level == 1) {
             groundBodyDef.position.set(50, 70);
@@ -435,82 +408,82 @@ public class GameScreen implements Screen {
         } else {
             groundBodyDef.position.set(35, 20);
         }
-         // Set the ground's position (centered)
         groundBodyDef.type = BodyDef.BodyType.StaticBody;
-        // Create the ground body in the world
         Body groundBody =this.world.createBody(groundBodyDef);
-        // Define the shape of the ground
         PolygonShape groundShape = new PolygonShape();
-        groundShape.setAsBox(800, 70); // Half-width and half-height of the ground
-        // Create a fixture and attach the shape to the ground body
+        groundShape.setAsBox(850, 70);
         FixtureDef groundFixtureDef = new FixtureDef();
         groundFixtureDef.shape = groundShape;
-        groundFixtureDef.friction = 1000f; // Adjust friction as needed
-        groundFixtureDef.restitution = 0.01f; // No bounce for the ground
+        groundFixtureDef.friction = 1000f;
+        groundFixtureDef.restitution = 0.01f;
         groundBody.createFixture(groundFixtureDef);
         groundShape.dispose();
     }
     private void createSlingshot() {
-        // Left arm of the slingshot
         BodyDef bodyDef = new BodyDef();
         if (level == 1) {
-            bodyDef.position.set(195,150); // Set the ground's position (centered)
+            bodyDef.position.set(195,150);
         } else if (level == 2) {
-            bodyDef.position.set(195,130); // Set the ground's position (centered)
+            bodyDef.position.set(195,130);
         } else {
-            bodyDef.position.set(195,80); // Set the ground's position (centered)
+            bodyDef.position.set(195,80);
         }
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        // Create the ground body in the world
         Body groundBody =this.world.createBody(bodyDef);
-        // Define the shape of the ground
         PolygonShape groundShape = new PolygonShape();
-        groundShape.setAsBox(7, 75); // Half-width and half-height of the ground
-        // Create a fixture and attach the shape to the ground body
+        groundShape.setAsBox(7, 75);
         FixtureDef groundFixtureDef = new FixtureDef();
         groundFixtureDef.shape = groundShape;
-        groundFixtureDef.friction = 0.5f; // Adjust friction as needed
-        groundFixtureDef.restitution = 0f; // No bounce for the ground
+        groundFixtureDef.friction = 0.5f;
+        groundFixtureDef.restitution = 0f;
         groundBody.createFixture(groundFixtureDef);
         groundShape.dispose();
     }
     private void handleInput() {
-        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.W)) {
-            //freebird.stop();
-            game.setScreen(new WinScreen(game)); // Switch to WinScreen
-            return; // Exit the method to prevent other input handling
-        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            System.out.println(launchedBird);
+            if (launchedBird instanceof YellowBird) {
+                YellowBird yellowBird = (YellowBird)(launchedBird);
+                yellowBird.body.setLinearVelocity(new Vector2(1000000000, 0));
+            }
 
-        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.L)) {
-            //freebird.stop();
-            game.setScreen(new LoseScreen(game, level)); // Switch to WinScreen
+            if (launchedBird instanceof BlueBird) {
+                BlueBird blueBird = (BlueBird)(launchedBird);
+                blueBird.body.setLinearVelocity(new Vector2(0, -6));
+            }
+        }
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.W)) {
+            game.setScreen(new WinScreen(game));
             return;
         }
 
-        if (birds.isEmpty()) return; // No birds left to launch
-        Bird bird = birds.get(0); // Get the first bird in the list
-        // Ensure the game uses an OrthographicCamera
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.L)) {
+            game.setScreen(new LoseScreen(game, level));
+            return;
+        }
+
+        if (birds.isEmpty()) return;
+        Bird bird = birds.get(0);
         if (Gdx.input.isTouched()) {
             Vector2 touchPos = new Vector2(Gdx.input.getX(),Gdx.graphics.getHeight()-Gdx.input.getY());
             if (!isPulling) {
                 if (bird.getBounds().contains(touchPos.x, touchPos.y)) {
-                    isPulling = true; // Start dragging
+                    isPulling = true;
                 }
             }
             if (isPulling) {
-                // Update drag position
                 dragPosition.set(touchPos.x, touchPos.y);
                 bird.body.setTransform(touchPos.x/2f, touchPos.y/2f, bird.body.getAngle());
             }
         } else {
             if (isPulling) {
-                isPulling = false; // Stop dragging
-                // Calculate and apply launch velocity
+                isPulling = false;
                 Vector2 launchForce = slingPosition.cpy().sub(dragPosition).scl(900000000f);
                 launchForce.y*=30;
-                launchForce.x*=20;// Scale multiplier as needed
+                launchForce.x*=20;
                 bird.body.applyLinearImpulse(launchForce, bird.body.getWorldCenter(), true);
                 launchedBird = bird;
+                System.out.println("hi"+launchedBird);
                 birds.remove(0);
                 if (!birds.isEmpty()){
                 birds.get(0).body.setTransform(slingPosition.x/1.8f-5,slingPosition.y/1.8f+200,bird.body.getAngle());
@@ -518,7 +491,10 @@ public class GameScreen implements Screen {
                 birds.get(0).y=slingPosition.y;}
             }
         }
+
     }
+
+
     public void saveBirdPositions(){
         String fileName = "BirdPositions.txt";
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
@@ -548,13 +524,13 @@ public class GameScreen implements Screen {
             writer.write("Level: " + level + "\n");
             for (Pig pig : pigs) {
                 if (pig != null && pig.body != null) {
-                    String type = pig.getClass().getSimpleName(); // Pig type
+                    String type = pig.getClass().getSimpleName();
                     Vector2 velocity = pig.body.getLinearVelocity();
                     float x = pig.body.getPosition().x;
                     float y = pig.body.getPosition().y;
                     float velocityX = velocity.x;
                     float velocityY = velocity.y;
-                    int health = pig.health; // Assuming getHealth() exists in Pig
+                    int health = pig.health;
 
                     String line = String.format("%s, %.2f, %.2f, %.2f, %.2f, %d", type, x, y, velocityX, velocityY, health);
                     writer.write(line + "\n");
@@ -564,13 +540,12 @@ public class GameScreen implements Screen {
             System.err.println("Error saving pig positions: " + e.getMessage());
         }
     }
-    // Save block positions
+
     public void saveBlockPositions() {
         String fileName = "BlockPositions.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write("Level: " + level + "\n");
 
-            // Combine all block lists into one
             List<Block> allBlocks = new ArrayList<>();
             if (woodBlocks != null) allBlocks.addAll(woodBlocks);
             if (glassBlocks != null) allBlocks.addAll(glassBlocks);
@@ -578,12 +553,12 @@ public class GameScreen implements Screen {
 
             for (Block block : allBlocks) {
                 if (block != null) {
-                    String type = block.getClass().getSimpleName(); // Block type
+                    String type = block.getClass().getSimpleName();
                     float x = block.body.getPosition().x;
                     float y = block.body.getPosition().y;
                     float height = block.height;
                     float width = block.width;
-                    int health = block.health; // Assuming getHealth() exists in Block
+                    int health = block.health;
 
                     String line = String.format("%s, %.2f, %.2f, %.2f, %.2f, %d", type, x, y, height, width, health);
                     writer.write(line + "\n");
@@ -604,29 +579,20 @@ public class GameScreen implements Screen {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Level:")) {
-                    // Parse level information, if necessary
                     String levelStr = line.substring("Level: ".length()).trim();
                     this.level = Integer.parseInt(levelStr);
-                    // You can set the level here if needed
                     continue;
                 }
 
-                // Parsing the bird data line
                 String[] data = line.split(", ");
-                if (data.length == 5) {  // Expected format: type, x, y, velocityX, velocityY
+                if (data.length == 5) {
                     String type = data[0].trim();
                     float x = Float.parseFloat(data[1].trim());
                     float y = Float.parseFloat(data[2].trim());
                     float velocityX = Float.parseFloat(data[3].trim());
                     float velocityY = Float.parseFloat(data[4].trim());
                     System.out.println(type + " " + x + " " + y + " " + velocityX + " " + velocityY);
-                    // Create a new Bird object of the correct type
                     Bird bird = createBird(type, x, y, velocityX, velocityY);
-
-                    // Add the bird to your game (e.g., to the birds list)
-                    /*if (bird != null) {
-                        birds.add(bird);
-                    }*/
                 }
             }
         } catch (IOException e) {
@@ -638,7 +604,6 @@ public class GameScreen implements Screen {
         Bird bird = null;
         System.out.println(type);
 
-        // Based on the type, create the correct bird object
         switch (type) {
             case "RedBird":
                 String texture1 = "redbird1.png";
@@ -652,9 +617,7 @@ public class GameScreen implements Screen {
                 String texture3 = "yellowbird1.png";
                 bird = new YellowBird(world, x, y, velocityX, velocityY, texture3);
                 break;
-            // Add other bird types here as necessary
         }
-        // Now, after creating the bird, reinitialize the body in Box2D world
 
         return bird;
     }
@@ -664,14 +627,12 @@ public class GameScreen implements Screen {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Level:")) {
-                    // Parse level information, if necessary
                     String levelStr = line.substring("Level: ".length()).trim();
                     continue;
                 }
 
-                // Parsing the pig data line
                 String[] data = line.split(", ");
-                if (data.length == 6) {  // Expected format: type, x, y, velocityX, velocityY, health
+                if (data.length == 6) {
                     String type = data[0];
                     float x = Float.parseFloat(data[1]);
                     float y = Float.parseFloat(data[2]);
@@ -679,10 +640,8 @@ public class GameScreen implements Screen {
                     float velocityY = Float.parseFloat(data[4]);
                     int health = Integer.parseInt(data[5]);
 
-                    // Create a new Pig object of the correct type
                     Pig pig = createPig(type, x, y, velocityX, velocityY, health);
 
-                    // Add the pig to your game (e.g., to the pigs list)
                     if (pig != null) {
                         pigs.add(pig);
                     }
@@ -696,7 +655,6 @@ public class GameScreen implements Screen {
     private Pig createPig(String type, float x, float y, float velocityX, float velocityY, int health) {
         Pig pig = null;
 
-        // Based on the type, create the correct pig object
         switch (type) {
             case "SmallPig":
                 Texture texture1 = new Texture("assets/pig1.png");
@@ -710,7 +668,6 @@ public class GameScreen implements Screen {
                 Texture texture3 = new Texture("assets/pig3.png");
                 pig = new LargePig(world, x, y, velocityX, velocityY, health, texture3);
                 break;
-            // Add other pig types if necessary
         }
 
         return pig;
@@ -721,14 +678,12 @@ public class GameScreen implements Screen {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Level:")) {
-                    // Parse level information, if necessary
                     String levelStr = line.substring("Level: ".length()).trim();
                     continue;
                 }
 
-                // Parsing the block data line
                 String[] data = line.split(", ");
-                if (data.length == 6) {  // Expected format: type, x, y, height, width, health
+                if (data.length == 6) {
                     String type = data[0];
                     float x = Float.parseFloat(data[1]);
                     float y = Float.parseFloat(data[2]);
@@ -736,21 +691,16 @@ public class GameScreen implements Screen {
                     float width = Float.parseFloat(data[4]);
                     int health = Integer.parseInt(data[5]);
 
-                    // Create a new Block object of the correct type
                     Block block = createBlock(type, x, y, height, width, health);
 
-                    // Add the block to your game (e.g., to the blocks list)
                     if (type.equals("Glass")) {
                         Texture texture1 = new Texture("assets/glass1.png");
-                        //Glass glassBlock = new Glass(world, x, y, height, width, health, texture1);
                         glassBlocks.add((Glass)block);
                     } else if (type.equals("Metal")) {
                         Texture texture2 = new Texture("assets/metal2.png");
-                        //Metal metalBlock = new Metal(world, x, y, height, width, health, texture2);
                         metalBlocks.add((Metal)block);
                     } else if (type.equals("Wood")) {
                         Texture texture3 = new Texture("assets/wood2.png");
-                        //Wood woodBlock = new Wood(world, x, y, height, width, health, texture3);
                         woodBlocks.add((Wood)block);
                     }
                 }
@@ -763,7 +713,6 @@ public class GameScreen implements Screen {
     private Block createBlock(String type, float x, float y, float height, float width, int health) {
         Block block = null;
 
-        // Based on the type, create the correct block object
         switch (type) {
             case "Wood":
                 Texture texture1 = new Texture("assets/wood1.png");
@@ -777,9 +726,7 @@ public class GameScreen implements Screen {
                 Texture texture3 = new Texture("assets/wood3.png");
                 block = new Metal(world, x, y, height, width, health, texture3);
                 break;
-            // Add other block types if necessary
         }
-        // Reinitialize the block's body in Box2D world
         return block;
     }
     public boolean isInframe(Pig pig) {

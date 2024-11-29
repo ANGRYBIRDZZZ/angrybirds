@@ -34,10 +34,9 @@ public class PausedScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         this.gameScreen = gameScreen;
 
+        background = new Texture(Gdx.files.internal("assets/angrybirdzzz.jpg"));
 
-        background = new Texture(Gdx.files.internal("assets/angrybirdzzz.jpg")); // Replace with your background image path
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf")); // Replace with your font path
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 24;
         buttonFont = generator.generateFont(parameter);
@@ -49,16 +48,16 @@ public class PausedScreen implements Screen {
         TextButton exitButton = createButton("Exit", buttonFont);
 
         backButton.setPosition(20, Gdx.graphics.getHeight() - backButton.getHeight() - 20);
-        resumeGameButton.setSize(200, 60); // Adjust width and height as needed
-        saveButton.setSize(200, 60); // Adjust width and height as needed
+        resumeGameButton.setSize(200, 60);
+        saveButton.setSize(200, 60);
         exitButton.setPosition(20, 20);
         resumeGameButton.setPosition(
             (Gdx.graphics.getWidth() - resumeGameButton.getWidth()) / 2,
-            (Gdx.graphics.getHeight() / 2) + 50 // Offset to place it slightly above
+            (Gdx.graphics.getHeight() / 2) + 50
         );
         saveButton.setPosition(
             (Gdx.graphics.getWidth() - saveButton.getWidth()) / 2,
-            (Gdx.graphics.getHeight() / 2) - 50 // Offset to place it slightly below
+            (Gdx.graphics.getHeight() / 2) - 50
         );
         backButton.addListener(new ClickListener() {
             @Override
@@ -69,8 +68,8 @@ public class PausedScreen implements Screen {
         resumeGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameScreen.setPaused(false); // Set the paused flag in GameScreen
-                game.setScreen(gameScreen); // Return to the GameScreen
+                gameScreen.setPaused(false);
+                game.setScreen(gameScreen);
             }
         });
 
@@ -103,6 +102,7 @@ public class PausedScreen implements Screen {
         style.fontColor = Color.WHITE;
         return new TextButton(text, style);
     }
+
     @Override
     public void show() {
     }

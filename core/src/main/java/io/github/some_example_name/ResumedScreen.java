@@ -68,8 +68,6 @@ public class ResumedScreen implements Screen {
 
         Gdx.input.setInputProcessor(stage);
     }
-    public ResumedScreen(Game game) {
-    }
     private TextButton createButton(String text, BitmapFont font) {
         TextButtonStyle style = new TextButtonStyle();
         style.font = font;
@@ -95,13 +93,7 @@ public class ResumedScreen implements Screen {
                     // Load GameScreen and saved positions
                     GameScreen gameScreen = new GameScreen(game);
                     System.out.println("new Gamescreen");
-                    // Call loading methods
                     gameScreen.loadBirdPositions();
-                    System.out.println("hi hello");
-                    //gameScreen.loadPigPositions();
-                    //gameScreen.loadBlockPositions();
-                    // Set the screen to GameScreen
-                    //game.setScreen(gameScreen);
                 }
             });
             stage.addActor(savedGameButton);

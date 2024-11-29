@@ -14,119 +14,65 @@ public abstract class Bird {
     public int height;
     public int width;
 
-    public Bird(World world,Texture texture, float x, float y) {
+    public Bird(World world, Texture texture, float x, float y) {
         this.texture = texture;
         this.x = x;
         this.y = y;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x/1.9f, y/1.9f);
+        bodyDef.position.set(x / 1.9f, y / 1.9f);
         this.body = world.createBody(bodyDef);
         this.body.setSleepingAllowed(false);
-        // Create Box2D shape for Bird (e.g., CircleShape for simplicity)
         CircleShape shape = new CircleShape();
-        shape.setRadius(20); // Radius of the bird (adjust as necess;
-        if (this instanceof BlueBird){
+        shape.setRadius(20);
+        if (this instanceof BlueBird) {
             shape.setRadius(14);
         }
-        // Create Box2D fixture and attach it to the body
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.5f;
         fixtureDef.friction = 0.25f;
-        fixtureDef.restitution = 0.5f; // Bounciness
-
+        fixtureDef.restitution = 0.5f;
         body.setUserData(this);
-
-        Vector2 gravityForce = new Vector2(0, -200f);  // Adjust the force as necessary
+        Vector2 gravityForce = new Vector2(0, -200f);
         this.body.applyForceToCenter(gravityForce, true);
         body.setFixedRotation(true);
         body.createFixture(fixtureDef);
         shape.dispose();
-        //shape.dispose();
     }
+
     public Bird(World world, float x, float y, float velocityX, float velocityY, String texture) {
         this.texture = new Texture(texture);
         this.x = x;
         this.y = y;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x/1.9f, y/1.9f);
-        this.body = world.createBody(bodyDef);
-        this.body.setSleepingAllowed(false);
-        // Create Box2D shape for Bird (e.g., CircleShape for simplicity)
-        CircleShape shape = new CircleShape();
-        shape.setRadius(20); // Radius of the bird (adjust as necess;
-        if (this instanceof BlueBird){
-            shape.setRadius(14);
-        }
-        // Create Box2D fixture and attach it to the body
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 0.5f;
-        fixtureDef.friction = 0.5f;
-        fixtureDef.restitution = 0.5f; // Bounciness
-
-        body.setUserData(this);
-        this.body.setLinearVelocity(velocityX, velocityY);
-
-        Vector2 gravityForce = new Vector2(0, -200f);  // Adjust the force as necessary
-        this.body.applyForceToCenter(gravityForce, true);
-        body.setFixedRotation(true);
-        body.createFixture(fixtureDef);
-        shape.dispose();
-    }
-    public void createBody(World world) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x / 1.9f, y / 1.9f);
         this.body = world.createBody(bodyDef);
         this.body.setSleepingAllowed(false);
-
-        // Create Box2D shape for Bird (e.g., CircleShape for simplicity)
         CircleShape shape = new CircleShape();
-        shape.setRadius(20); // Default radius of the bird
-
-        // Adjust the radius for BlueBird
+        shape.setRadius(20);
         if (this instanceof BlueBird) {
             shape.setRadius(14);
         }
-
-        // Create Box2D fixture and attach it to the body
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.5f;
         fixtureDef.friction = 0.5f;
-        fixtureDef.restitution = 0.5f; // Bounciness
-
+        fixtureDef.restitution = 0.5f;
         body.setUserData(this);
-
-        Vector2 gravityForce = new Vector2(0, -200f);  // Adjust the force as necessary
+        this.body.setLinearVelocity(velocityX, velocityY);
+        Vector2 gravityForce = new Vector2(0, -200f);
         this.body.applyForceToCenter(gravityForce, true);
         body.setFixedRotation(true);
         body.createFixture(fixtureDef);
-
         shape.dispose();
     }
 
-    // Method to set the bird's body properties (called during reinitialization)
-    public void setBody(World world, float x, float y, float velocityX, float velocityY) {
-        this.x = x;
-        this.y = y;
-
-        // Remove old body if necessary (optional based on your game setup)
-        if (this.body != null) {
-            world.destroyBody(this.body);
-        }
-
-        createBody(world);  // Create a new body at the loaded position
-
-        // Set the velocity of the bird's body
-        this.body.setLinearVelocity(velocityX, velocityY);
-    }
     public void draw(SpriteBatch batch, float width, float height) {
-        batch.draw(texture, this.body.getPosition().x*2.15f-width/2f-10, this.body.getPosition().y*1.95f-40, width, height);
+        batch.draw(texture, this.body.getPosition().x * 2.15f - width / 2f - 10, this.body.getPosition().y * 1.95f - 40, width, height);
     }
+
     public Texture getTexture() {
         return texture;
     }
@@ -136,9 +82,7 @@ public abstract class Bird {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x-10,y-30, 70, 70);
+        return new Rectangle(x - 10, y - 30, 70, 70);
     }
 
-    public void setBody(Body birdBody) {
-    }
 }

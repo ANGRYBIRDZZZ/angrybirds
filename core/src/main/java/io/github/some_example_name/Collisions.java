@@ -16,7 +16,6 @@ public class Collisions implements ContactListener {
             Bird bird = (Bird)instanceA;
             Pig pig = (Pig)instanceB;
             pig.health -=1;
-            System.out.println("fart");
             if (pig.health <= 0) {
                 GameScreen.toRemovepigs.add(pig);
             }
