@@ -11,4 +11,8 @@ public class YellowBird extends Bird {
     }
 
 
+    public YellowBird(World world, float x, float y, float velocityX, float velocityY, String texture) {
+        super(world, x, y, velocityX, velocityY, "yellowbird1.png");
+        this.body.getFixtureList().get(0).setRestitution(0.1f);
+    }
 }

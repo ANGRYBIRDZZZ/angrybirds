@@ -93,9 +93,9 @@ public class WinScreen implements Screen {
     }
 
     private void layoutButtons(float screenWidth, float screenHeight) {
-        float buttonWidth = 0.2f * screenWidth;
-        float buttonHeight = 0.05f * screenHeight;
-        float spacing = 20;
+        float buttonWidth = 0.3f * screenWidth;
+        float buttonHeight = 0.08f * screenHeight;
+        float spacing = 30;
 
         for (int i = 0; i < stage.getActors().size; i++) {
             Actor button = stage.getActors().get(i);
@@ -118,8 +118,8 @@ public class WinScreen implements Screen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0, 0, 0, 1);
 
-        float yellowBackgroundWidth = 0.8f;
-        float padding = 10;
+        float yellowBackgroundWidth = 0.5f;
+        float padding = 15;
 
         for (Actor button : stage.getActors()) {
             float rectWidth = button.getWidth() * yellowBackgroundWidth;

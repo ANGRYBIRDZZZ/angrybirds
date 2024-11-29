@@ -13,6 +13,10 @@ public class Glass extends Block {
         this.health =1;
     }
 
+    public Glass(World world, float x, float y, float height, float width, int health, Texture texture) {
+        super(world, x, y, height, width, health, texture);
+    }
+
     @Override
     public void dispose() {
         if (texture != null) texture.dispose();

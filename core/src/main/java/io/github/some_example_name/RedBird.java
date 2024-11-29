@@ -11,4 +11,8 @@ public class RedBird extends Bird {
         this.body.getFixtureList().get(0).setRestitution(0.1f);
     }
 
+    public RedBird(World world, float x, float y, float velocityX, float velocityY, String texture) {
+        super(world, x, y, velocityX, velocityY, "redbird1.png");
+        this.body.getFixtureList().get(0).setRestitution(0.1f);
+    }
 }

@@ -79,7 +79,6 @@ public class PausedScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 gameScreen.saveGameState();
                 game.setScreen(new HomePage(game));
-                game.setScreen(new ResumedScreen(game, gameScreen));
             }
         });
 

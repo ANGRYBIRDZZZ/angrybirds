@@ -10,11 +10,9 @@ public class Lwjgl3Launcher {
         if (StartupHelper.startNewJvmIfRequired()) return;
         createApplication();
     }
-
     private static Lwjgl3Application createApplication() {
         return new Lwjgl3Application(new Main(), getDefaultConfiguration());
     }
-
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("AngryBirds_AP");

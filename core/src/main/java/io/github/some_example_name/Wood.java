@@ -13,6 +13,10 @@ public class Wood extends Block {
         this.health =2;
     }
 
+    public Wood(World world, float x, float y, float height, float width, int health, Texture texture) {
+        super(world, x, y, height, width, health, texture);
+    }
+
 
     @Override
     public void dispose() {

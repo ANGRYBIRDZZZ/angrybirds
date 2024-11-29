@@ -42,11 +42,9 @@ public class ResumedScreen implements Screen {
         generator.dispose();
 
         TextButton backButton = createButton("Back", buttonFont);
-        TextButton saveButton = createButton("Save", buttonFont);
         TextButton exitButton = createButton("Exit", buttonFont);
 
         backButton.setPosition(20, Gdx.graphics.getHeight() - backButton.getHeight() - 20);
-        saveButton.setPosition(Gdx.graphics.getWidth() - 100, 20);
         exitButton.setPosition(20, 20);
 
         backButton.addListener(new ClickListener() {
@@ -55,13 +53,7 @@ public class ResumedScreen implements Screen {
                 game.setScreen(new HomePage(game));
             }
         });
-        saveButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                gameScreen.saveGameState();
-                game.setScreen(new HomePage(game));
-            }
-        });
+
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -70,7 +62,6 @@ public class ResumedScreen implements Screen {
         });
 
         stage.addActor(backButton);
-        stage.addActor(saveButton);
         stage.addActor(exitButton);
 
         createSavedGameButtons();
@@ -87,7 +78,7 @@ public class ResumedScreen implements Screen {
     }
 
     private void createSavedGameButtons() {
-        int numberOfButtons = 4;
+        int numberOfButtons = 1;
         float buttonHeight = 50;
         float spacing = 10;
 
@@ -95,19 +86,27 @@ public class ResumedScreen implements Screen {
         float startY = (Gdx.graphics.getHeight() - totalHeight) / 2;
 
         for (int i = 1; i <= numberOfButtons; i++) {
-            String buttonText = "Saved Game " + i;
+            String buttonText = "Saved Game";
             TextButton savedGameButton = createButton(buttonText, buttonFont);
             savedGameButton.setPosition(Gdx.graphics.getWidth() / 2 - savedGameButton.getWidth() / 2, startY + (i - 1) * (buttonHeight + spacing));
             savedGameButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    game.setScreen(new SecondScreen(game));
+                    // Load GameScreen and saved positions
+                    GameScreen gameScreen = new GameScreen(game);
+                    System.out.println("new Gamescreen");
+                    // Call loading methods
+                    gameScreen.loadBirdPositions();
+                    System.out.println("hi hello");
+                    //gameScreen.loadPigPositions();
+                    //gameScreen.loadBlockPositions();
+                    // Set the screen to GameScreen
+                    //game.setScreen(gameScreen);
                 }
             });
             stage.addActor(savedGameButton);
         }
     }
-
     @Override
     public void show() {
     }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -22,8 +23,8 @@ public class LoseScreen implements Screen {
     private Game game;
     private SpriteBatch batch;
     private Texture loseTexture;
-    private Texture looseTexture;
     private BitmapFont buttonFont;
+    private BitmapFont titleFont; // Font for the title
     private Stage stage;
     private ShapeRenderer shapeRenderer;
 
@@ -33,7 +34,7 @@ public class LoseScreen implements Screen {
         Music freebird = Gdx.audio.newMusic(Gdx.files.internal("loseSound.mp3"));
         freebird.setVolume(0.5f);
         freebird.play();
-        // Initialize essential components
+
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
         shapeRenderer = new ShapeRenderer();
@@ -42,14 +43,24 @@ public class LoseScreen implements Screen {
         // Load textures
         try {
             loseTexture = new Texture(Gdx.files.internal("lose.png"));
-            looseTexture = new Texture(Gdx.files.internal("loose.png"));
         } catch (Exception e) {
             System.err.println("Error loading textures: " + e.getMessage());
         }
 
-        // Load font
-        buttonFont = new BitmapFont();
-        buttonFont.getData().setScale(1.5f);
+        // Load title and button fonts
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf"));
+
+        // Title font parameters
+        FreeTypeFontGenerator.FreeTypeFontParameter titleParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        titleParams.size = 200; // Larger size for the title
+        titleFont = generator.generateFont(titleParams);
+
+        // Button font parameters
+        FreeTypeFontGenerator.FreeTypeFontParameter buttonParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        buttonParams.size = 35; // Smaller size for buttons
+        buttonFont = generator.generateFont(buttonParams);
+
+        generator.dispose(); // Dispose after generating all fonts
 
         // Create Buttons
         TextButton restartButton = createButton("Restart", buttonFont);
@@ -125,13 +136,12 @@ public class LoseScreen implements Screen {
             batch.draw(loseTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
 
-        // Draw the "loose" texture
-        if (looseTexture != null) {
-            float looseImageHeight = Gdx.graphics.getHeight() * 0.15f;
-            float looseImageWidth = looseImageHeight * looseTexture.getWidth() / looseTexture.getHeight();
-            batch.draw(looseTexture, (Gdx.graphics.getWidth() - looseImageWidth) / 2,
-                Gdx.graphics.getHeight() - looseImageHeight, looseImageWidth, looseImageHeight);
-        }
+        // Draw the title text
+        titleFont.setColor(Color.BLACK); // Black text for "Battle Lost!"
+        float textWidth = titleFont.getRegion().getRegionWidth();
+        float x = (Gdx.graphics.getWidth() - textWidth) / 2 -25;
+        float y = Gdx.graphics.getHeight() - 125; // Position near the top
+        titleFont.draw(batch, "BATTLE LOST!", x, y);
 
         batch.end();
 
@@ -140,14 +150,13 @@ public class LoseScreen implements Screen {
         shapeRenderer.setColor(Color.BLACK);
 
         for (Actor actor : stage.getActors()) {
-            float x = actor.getX(); // Button's X position
-            float y = actor.getY(); // Button's Y position
-            float width = actor.getWidth(); // Button's width
-            float height = actor.getHeight(); // Button's height
+            x = actor.getX();
+            y = actor.getY();
+            float width = actor.getWidth();
+            float height = actor.getHeight();
 
             // Draw a rectangle slightly larger than the button
-            shapeRenderer.rect(x - 5, y - 2, width + 10, height ); // Reduced padding
-            // Padding around the button
+            shapeRenderer.rect(x - 2, y - 2, width, height);
         }
 
         shapeRenderer.end();
@@ -156,7 +165,6 @@ public class LoseScreen implements Screen {
         stage.act(delta);
         stage.draw();
     }
-
 
     @Override
     public void resize(int width, int height) {
@@ -180,8 +188,8 @@ public class LoseScreen implements Screen {
     public void dispose() {
         batch.dispose();
         if (loseTexture != null) loseTexture.dispose();
-        if (looseTexture != null) looseTexture.dispose();
         buttonFont.dispose();
+        titleFont.dispose();
         stage.dispose();
         shapeRenderer.dispose();
     }

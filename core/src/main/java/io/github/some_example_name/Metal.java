@@ -13,6 +13,10 @@ public class Metal extends Block {
         this.health=3;
     }
 
+    public Metal(World world, float x, float y, float height, float width, int health, Texture texture) {
+        super(world, x, y, height, width, health, texture);
+    }
+
     @Override
     public void dispose() {
         if (texture != null) texture.dispose();

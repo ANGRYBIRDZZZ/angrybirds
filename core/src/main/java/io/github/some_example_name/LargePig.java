@@ -13,6 +13,14 @@ public class LargePig extends Pig {
         this.body.getFixtureList().get(0).getShape().setRadius(30);
     }
 
+    public LargePig(World world, float x, float y, float velocityX, float velocityY, int health, Texture texture) {
+        super(world, x, y, velocityX, velocityY, health, texture);
+
+        this.height=125;
+        this.width=150;
+        this.body.getFixtureList().get(0).getShape().setRadius(30);
+    }
+
     public void takeHit(int damage) {
         if (health > 0) {
             health -= damage;

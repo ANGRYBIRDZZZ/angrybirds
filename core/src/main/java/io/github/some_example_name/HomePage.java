@@ -26,6 +26,7 @@ public class HomePage implements Screen {
     private BitmapFont buttonFont1;
     private Stage stage;
     private ShapeRenderer shapeRenderer;
+    private Texture heading;
 
     public HomePage(Game game) {
         this.game = game;
@@ -35,6 +36,7 @@ public class HomePage implements Screen {
         shapeRenderer = new ShapeRenderer();
 
         background = new Texture(Gdx.files.internal("assets/angrybirdsss.png"));
+        heading = new Texture(Gdx.files.internal("assets/angrybird.png"));
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -43,11 +45,12 @@ public class HomePage implements Screen {
         buttonFont1 = generator.generateFont(parameter);
         generator.dispose();
 
+        // Create buttons
         TextButton startButton = createButton("New Game", buttonFont1);
         TextButton resumeButton = createButton("Resume", buttonFont1);
         TextButton exitButton = createButton("Exit", buttonFont1);
-        TextButton settingsButton = createButton("Settings", buttonFont1);
 
+        // Add listeners to buttons
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -58,7 +61,8 @@ public class HomePage implements Screen {
         resumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new ResumedScreen(game));
+                GameScreen currentGameScreen = new GameScreen(game);
+                game.setScreen(new ResumedScreen(game, currentGameScreen));
             }
         });
 
@@ -69,20 +73,14 @@ public class HomePage implements Screen {
             }
         });
 
-        settingsButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SettingsPage(game));
-            }
-        });
-
+        // Add buttons to the stage
         stage.addActor(startButton);
         stage.addActor(resumeButton);
         stage.addActor(exitButton);
-        stage.addActor(settingsButton);
 
         Gdx.input.setInputProcessor(stage);
 
+        // Layout buttons
         layoutButtons(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
@@ -97,23 +95,22 @@ public class HomePage implements Screen {
     }
 
     private void layoutButtons(float screenWidth, float screenHeight) {
-        float buttonWidth = 0.15f * screenWidth;
-        float buttonHeight = 0.05f * screenHeight;
+        float buttonWidth = 0.15f * screenWidth; // Button width as a percentage of screen width
+        float buttonHeight = 0.05f * screenHeight; // Button height as a percentage of screen height
 
-        stage.getActors().get(0).setSize(buttonWidth, buttonHeight);
-        stage.getActors().get(1).setSize(buttonWidth, buttonHeight);
-        stage.getActors().get(2).setSize(0.1f * screenWidth, buttonHeight);
-        stage.getActors().get(3).setSize(0.1f * screenWidth, buttonHeight);
+        float buttonSpacing = 10; // Space between buttons
+        float verticalOffset = screenHeight * 0.3f; // Offset from the top of the screen (30% down)
 
-        float buttonSpacing = 5;
-        float bottomY = buttonSpacing;
+        // Position the buttons
+        float centerY = screenHeight - verticalOffset - (3 * buttonHeight + 2 * buttonSpacing) -300;
 
-        stage.getActors().get(1).setPosition(screenWidth / 2 - stage.getActors().get(1).getWidth() / 2, bottomY);
+        stage.getActors().get(0).setSize(buttonWidth, buttonHeight); // Start button
+        stage.getActors().get(1).setSize(buttonWidth, buttonHeight); // Resume button
+        stage.getActors().get(2).setSize(buttonWidth, buttonHeight); // Exit button
 
-        stage.getActors().get(0).setPosition(screenWidth / 2 - stage.getActors().get(0).getWidth() / 2, bottomY + stage.getActors().get(1).getHeight() + buttonSpacing);
-
-        stage.getActors().get(2).setPosition(buttonSpacing, buttonSpacing);
-        stage.getActors().get(3).setPosition(screenWidth - stage.getActors().get(3).getWidth() - buttonSpacing, buttonSpacing);
+        stage.getActors().get(0).setPosition(screenWidth / 2 - buttonWidth / 2 -20, centerY + 2 * (buttonHeight + buttonSpacing)); // Start button
+        stage.getActors().get(1).setPosition(screenWidth / 2 - buttonWidth / 2 -20, centerY + buttonHeight + buttonSpacing); // Resume button
+        stage.getActors().get(2).setPosition(screenWidth / 2 - buttonWidth / 2 -20, centerY); // Exit button
     }
 
 
@@ -126,7 +123,16 @@ public class HomePage implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
+        // Draw the background
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        // Draw the heading texture at the top
+        float headingWidth = Gdx.graphics.getWidth() * 0.8f; // Scale it to 80% of screen width
+        float headingHeight = headingWidth * (heading.getHeight() / (float) heading.getWidth()); // Maintain aspect ratio
+        float headingX = (Gdx.graphics.getWidth() - headingWidth) / 2; // Center the heading
+        float headingY = Gdx.graphics.getHeight() - headingHeight - 20; // Offset 20px from the top
+        batch.draw(heading, headingX, headingY, headingWidth, headingHeight);
+
         batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -173,5 +179,6 @@ public class HomePage implements Screen {
         shapeRenderer.dispose();
         background.dispose();
         buttonFont1.dispose();
+        heading.dispose();
     }
 }

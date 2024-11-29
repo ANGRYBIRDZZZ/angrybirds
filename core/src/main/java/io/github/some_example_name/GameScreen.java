@@ -21,6 +21,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.*;
 import com.badlogic.gdx.Input; // Add this import
 import com.badlogic.gdx.physics.box2d.World;
@@ -50,9 +52,11 @@ public class GameScreen implements Screen {
     private Viewport viewport;
     List<Wood> woodBlocks = new ArrayList<>();
     private List<Pig> pigs1;
-    private List<Glass> glassBlocks;
+    //private List<Glass> glassBlocks;
+    List<Glass> glassBlocks = new ArrayList<>();
     private List<Pig> pigs3;
-    private List<Metal> metalBlocks;
+    //private List<Metal> metalBlocks;
+    List<Metal> metalBlocks = new ArrayList<>();
     private List<Pig> pigs2;
     private boolean isPulling = false;
     private Vector2 slingPosition;// Position of the slingshot
@@ -82,6 +86,7 @@ public class GameScreen implements Screen {
         slingshotLeft = new Texture(Gdx.files.internal("assets/slingshotleft.png"));
         slingshotRight = new Texture(Gdx.files.internal("assets/slingshotright.png"));
         birds = new ArrayList<>();
+
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 24;
@@ -138,7 +143,6 @@ public class GameScreen implements Screen {
             birds.add(yellowBird1);
             birds.add(yellowBird2);
             birds.add(yellowBird3);
-            metalBlocks = new ArrayList<>();
             metalBlocks.add(new Metal(world,metalTexture1, 1125, 260)); // Adjust x and y as needed
             metalBlocks.add(new Metal(world,metalTexture2, 1250, 260)); // Adjust x and y as needed
             metalBlocks.add(new Metal(world,metalTexture3, 1300, 600)); // Adjust x and y as needed
@@ -161,7 +165,6 @@ public class GameScreen implements Screen {
             blueBird1 = new BlueBird(world,blueBirdTexture1, 380, 350);
             blueBird2 = new BlueBird(world,blueBirdTexture2, 140, 165);
             blueBird3 = new BlueBird(world,blueBirdTexture3, 180, 165);
-            glassBlocks = new ArrayList<>();
             Texture glassTexture1 = new Texture(Gdx.files.internal("assets/glass1.png"));
             Texture glassTexture2 = new Texture(Gdx.files.internal("assets/glass2.png"));
             Texture glassTexture3 = new Texture(Gdx.files.internal("assets/glass5.png"));
@@ -185,7 +188,34 @@ public class GameScreen implements Screen {
         }
         Gdx.input.setInputProcessor(stage);
     }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public GameScreen(Game game) {
+        this.game = game;
+        this.level = 1;
+        slingPosition=new Vector2(373,515);
+        camera = new OrthographicCamera();
+        shapeRenderer=new ShapeRenderer();
+        camera.setToOrtho(false, 900, 600);
+        camera.update();
+        viewport = new FitViewport(5000, 2000, camera);
+        batch = new SpriteBatch();
+        stage = new Stage(new ScreenViewport());
+        shapeRenderer = new ShapeRenderer();
+        World world = new World(new Vector2(0,-15f), true);
+        debugRenderer = new Box2DDebugRenderer();
+        PausedScreen pausedScreen = new PausedScreen(game, this); // Passing 'this' to refer to the current GameScreen
+        background = new Texture(Gdx.files.internal("assets/level" + level + ".jpg"));
+        slingshotLeft = new Texture(Gdx.files.internal("assets/slingshotleft.png"));
+        slingshotRight = new Texture(Gdx.files.internal("assets/slingshotright.png"));
+        birds = new ArrayList<>();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/ConcertOneRegular.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 24;
+        buttonFont = generator.generateFont(parameter);
+        generator.dispose();
+        pigs = new ArrayList<>();
+    }
+
     public void setPaused(boolean paused) {
         this.isPaused = isPaused;
     }
@@ -206,14 +236,6 @@ public class GameScreen implements Screen {
                 isPaused = true; // Set the paused flag
                 //freebird.stop();
                 game.setScreen(new PausedScreen(game, GameScreen.this)); // Pass GameScreen instance
-            }
-        });
-        createButton("Save", Gdx.graphics.getWidth() - 120, 20, buttonStyle, new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                saveGameState();
-                //freebird.stop();
-                game.setScreen(new ResumedScreen(game));
             }
         });
         createButton("Home", 20, 20, buttonStyle, new ClickListener() {
@@ -295,9 +317,15 @@ public class GameScreen implements Screen {
 
             if (level == 1) {
                 batch.draw(slingshotRight, 400, 290, slingshotRight.getWidth() * 1.8f, slingshotRight.getHeight() * 1.6f);
-                if (redBird1 != null) redBird1.draw(batch, 100, 100);
-                if (redBird2 != null) redBird2.draw(batch, 100, 100);
-                if (redBird3 != null) redBird3.draw(batch, 100, 100);
+                //if (redBird1 != null) redBird1.draw(batch, 100, 100);
+                //if (redBird2 != null) redBird2.draw(batch, 100, 100);
+                //if (redBird3 != null) redBird3.draw(batch, 100, 100);
+                for(Bird bird: birds){
+                    bird.draw(batch, 100, 100);
+                }
+                if(launchedBird != null){
+                    launchedBird.draw(batch, 100, 100);
+                }
                 batch.draw(slingshotLeft, 365, 400, slingshotLeft.getWidth() * 1.4f, slingshotLeft.getHeight() * 1.5f);
                 for (Wood block : woodBlocks) {
                     block.draw(batch);
@@ -490,31 +518,28 @@ public class GameScreen implements Screen {
                 birds.get(0).y=slingPosition.y;}
             }
         }
-        SpriteBatch sb=new SpriteBatch();
-        sb.begin();
-        sb.draw(new Texture("yellowbird1.png"),bird.x,bird.y);
-        sb.end();
     }
     public void saveBirdPositions(){
         String fileName = "BirdPositions.txt";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            writer.write("Level: " + level + "\n");
-            for (Bird bird : birds) {
-                if (bird != null) {
-                    String type = bird.getClass().getSimpleName(); // Bird type
-                    Vector2 velocity = bird.body.getLinearVelocity();
-                    float x = bird.body.getPosition().x;
-                    float y = bird.body.getPosition().y;
-                    float velocityX = velocity.x;
-                    float velocityY = velocity.y;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+                writer.write("Level: " + level + "\n");
+                for (Bird bird : birds) {
+                    if (bird != null) {
+                        String type = bird.getClass().getSimpleName(); // Bird type
+                        Vector2 velocity = bird.body.getLinearVelocity();
+                        float x = bird.body.getPosition().x;
+                        float y = bird.body.getPosition().y;
+                        float velocityX = velocity.x;
+                        float velocityY = velocity.y;
 
-                    String line = String.format("%s, %.2f, %.2f, %.2f, %.2f", type, x, y, velocityX, velocityY);
-                    writer.write(line + "\n");
+                        String line = String.format("%s, %.2f, %.2f, %.2f, %.2f", type, x, y, velocityX, velocityY);
+                        writer.write(line + "\n");
+                    }
                 }
+            } catch (IOException e) {
+                System.err.println("Error saving bird positions: " + e.getMessage());
             }
-        } catch (IOException e) {
-            System.err.println("Error saving bird positions: " + e.getMessage());
-        }
+
     }
     // Save pig positions
     public void savePigPositions() {
@@ -573,7 +598,190 @@ public class GameScreen implements Screen {
         savePigPositions();
         saveBlockPositions();
     }
+    public void loadBirdPositions() {
+        String fileName = "BirdPositions.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Level:")) {
+                    // Parse level information, if necessary
+                    String levelStr = line.substring("Level: ".length()).trim();
+                    this.level = Integer.parseInt(levelStr);
+                    // You can set the level here if needed
+                    continue;
+                }
 
+                // Parsing the bird data line
+                String[] data = line.split(", ");
+                if (data.length == 5) {  // Expected format: type, x, y, velocityX, velocityY
+                    String type = data[0].trim();
+                    float x = Float.parseFloat(data[1].trim());
+                    float y = Float.parseFloat(data[2].trim());
+                    float velocityX = Float.parseFloat(data[3].trim());
+                    float velocityY = Float.parseFloat(data[4].trim());
+                    System.out.println(type + " " + x + " " + y + " " + velocityX + " " + velocityY);
+                    // Create a new Bird object of the correct type
+                    Bird bird = createBird(type, x, y, velocityX, velocityY);
+
+                    // Add the bird to your game (e.g., to the birds list)
+                    /*if (bird != null) {
+                        birds.add(bird);
+                    }*/
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading bird positions: " + e.getMessage());
+        }
+    }
+
+    private Bird createBird(String type, float x, float y, float velocityX, float velocityY) {
+        Bird bird = null;
+        System.out.println(type);
+
+        // Based on the type, create the correct bird object
+        switch (type) {
+            case "RedBird":
+                String texture1 = "redbird1.png";
+                bird = new RedBird(world, x, y, velocityX, velocityY, texture1);
+                break;
+            case "BlueBird":
+                String texture2 = "bluebird1.png";
+                bird = new BlueBird(world, x, y, velocityX, velocityY, texture2);
+                break;
+            case "YellowBird":
+                String texture3 = "yellowbird1.png";
+                bird = new YellowBird(world, x, y, velocityX, velocityY, texture3);
+                break;
+            // Add other bird types here as necessary
+        }
+        // Now, after creating the bird, reinitialize the body in Box2D world
+
+        return bird;
+    }
+    public void loadPigPositions() {
+        String fileName = "PigPositions.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Level:")) {
+                    // Parse level information, if necessary
+                    String levelStr = line.substring("Level: ".length()).trim();
+                    continue;
+                }
+
+                // Parsing the pig data line
+                String[] data = line.split(", ");
+                if (data.length == 6) {  // Expected format: type, x, y, velocityX, velocityY, health
+                    String type = data[0];
+                    float x = Float.parseFloat(data[1]);
+                    float y = Float.parseFloat(data[2]);
+                    float velocityX = Float.parseFloat(data[3]);
+                    float velocityY = Float.parseFloat(data[4]);
+                    int health = Integer.parseInt(data[5]);
+
+                    // Create a new Pig object of the correct type
+                    Pig pig = createPig(type, x, y, velocityX, velocityY, health);
+
+                    // Add the pig to your game (e.g., to the pigs list)
+                    if (pig != null) {
+                        pigs.add(pig);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading pig positions: " + e.getMessage());
+        }
+    }
+
+    private Pig createPig(String type, float x, float y, float velocityX, float velocityY, int health) {
+        Pig pig = null;
+
+        // Based on the type, create the correct pig object
+        switch (type) {
+            case "SmallPig":
+                Texture texture1 = new Texture("assets/pig1.png");
+                pig = new SmallPig(world, x, y, velocityX, velocityY, health, texture1);
+                break;
+            case "MediumPig":
+                Texture texture2 = new Texture("assets/pig2.png");
+                pig = new MediumPig(world, x, y, velocityX, velocityY, health, texture2);
+                break;
+            case "LargePig":
+                Texture texture3 = new Texture("assets/pig3.png");
+                pig = new LargePig(world, x, y, velocityX, velocityY, health, texture3);
+                break;
+            // Add other pig types if necessary
+        }
+
+        return pig;
+    }
+    public void loadBlockPositions() {
+        String fileName = "BlockPositions.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Level:")) {
+                    // Parse level information, if necessary
+                    String levelStr = line.substring("Level: ".length()).trim();
+                    continue;
+                }
+
+                // Parsing the block data line
+                String[] data = line.split(", ");
+                if (data.length == 6) {  // Expected format: type, x, y, height, width, health
+                    String type = data[0];
+                    float x = Float.parseFloat(data[1]);
+                    float y = Float.parseFloat(data[2]);
+                    float height = Float.parseFloat(data[3]);
+                    float width = Float.parseFloat(data[4]);
+                    int health = Integer.parseInt(data[5]);
+
+                    // Create a new Block object of the correct type
+                    Block block = createBlock(type, x, y, height, width, health);
+
+                    // Add the block to your game (e.g., to the blocks list)
+                    if (type.equals("Glass")) {
+                        Texture texture1 = new Texture("assets/glass1.png");
+                        //Glass glassBlock = new Glass(world, x, y, height, width, health, texture1);
+                        glassBlocks.add((Glass)block);
+                    } else if (type.equals("Metal")) {
+                        Texture texture2 = new Texture("assets/metal2.png");
+                        //Metal metalBlock = new Metal(world, x, y, height, width, health, texture2);
+                        metalBlocks.add((Metal)block);
+                    } else if (type.equals("Wood")) {
+                        Texture texture3 = new Texture("assets/wood2.png");
+                        //Wood woodBlock = new Wood(world, x, y, height, width, health, texture3);
+                        woodBlocks.add((Wood)block);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading block positions: " + e.getMessage());
+        }
+    }
+
+    private Block createBlock(String type, float x, float y, float height, float width, int health) {
+        Block block = null;
+
+        // Based on the type, create the correct block object
+        switch (type) {
+            case "Wood":
+                Texture texture1 = new Texture("assets/wood1.png");
+                block = new Wood(world,x, y, height, width, health, texture1);
+                break;
+            case "Glass":
+                Texture texture2 = new Texture("assets/wood2.png");
+                block = new Glass(world, x, y, height, width, health, texture2);
+                break;
+            case "Metal":
+                Texture texture3 = new Texture("assets/wood3.png");
+                block = new Metal(world, x, y, height, width, health, texture3);
+                break;
+            // Add other block types if necessary
+        }
+        // Reinitialize the block's body in Box2D world
+        return block;
+    }
     public boolean isInframe(Pig pig) {
         if (pig.body.getPosition().x > 1920/1.8f || pig.body.getPosition().x <0 || pig.body.getPosition().y <0 || pig.body.getPosition().y > 1200/1.8f) {
             return false;
@@ -582,7 +790,6 @@ public class GameScreen implements Screen {
             return true;
         }
     }
-
     public boolean isInframe(Bird bird) {
         if (bird.body.getPosition().x > 1920/1.8f || bird.body.getPosition().x <0 || bird.body.getPosition().y <0 || bird.body.getPosition().y > 1200/1.8f) {
             return false;
