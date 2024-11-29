@@ -31,7 +31,7 @@ public class Pig {
         fixtureDef.shape = shape;
         fixtureDef.density = 0.05f; // Adjust density for desired physics behavior
         fixtureDef.friction = 0.25f; // Friction for realistic movement
-        fixtureDef.restitution = 0.1f; // Bounciness for some impact response
+        fixtureDef.restitution = 0.05f; // Bounciness for some impact response
 
         body.setUserData(this);
 

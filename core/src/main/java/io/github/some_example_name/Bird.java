@@ -33,7 +33,7 @@ public abstract class Bird {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.5f;
-        fixtureDef.friction = 0.5f;
+        fixtureDef.friction = 0.25f;
         fixtureDef.restitution = 0.5f; // Bounciness
 
         body.setUserData(this);
@@ -125,7 +125,7 @@ public abstract class Bird {
         this.body.setLinearVelocity(velocityX, velocityY);
     }
     public void draw(SpriteBatch batch, float width, float height) {
-        batch.draw(texture, this.body.getPosition().x*2.15f-width/2f, this.body.getPosition().y*1.95f-40, width, height);
+        batch.draw(texture, this.body.getPosition().x*2.15f-width/2f-10, this.body.getPosition().y*1.95f-40, width, height);
     }
     public Texture getTexture() {
         return texture;

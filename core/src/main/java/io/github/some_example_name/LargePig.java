@@ -10,7 +10,7 @@ public class LargePig extends Pig {
         this.health = 3; // Default health for large pig
         this.height=125;
         this.width=150;
-        this.body.getFixtureList().get(0).getShape().setRadius(30);
+        this.body.getFixtureList().get(0).getShape().setRadius(27);
     }
 
     public LargePig(World world, float x, float y, float velocityX, float velocityY, int health, Texture texture) {
